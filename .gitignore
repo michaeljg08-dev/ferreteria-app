@@ -1,0 +1,11 @@
+# Backups and temporary files
+*.backup
+*.tmp
+/tmp/
+.gemini/
+brain/
+
+# IDE and OS files
+.vscode/
+.DS_Store
+Thumbs.db
