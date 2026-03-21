@@ -3247,7 +3247,7 @@
       if (imgs.length === 0) {
         container.innerHTML = `
       <div class="det-main-img">
-        <div class="emoji-placeholder">${currentProducto.emoji || '📦'}</div>
+        <div class="emoji-placeholder">📦</div>
       </div>
     `;
         return;
@@ -3318,7 +3318,7 @@
         const hasImgs = p.imagenes && p.imagenes.length > 0;
         const galleryHtml = hasImgs ? p.imagenes.map((img, idx) => `
       <img src="${img}" class="${idx === 0 ? 'active' : ''}" alt="${p.nombre}" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/FFD000?text=${encodeURIComponent(p.nombre)}';">
-    `).join('') : `<div class="emoji-placeholder">${p.emoji || '📦'}</div>`;
+    `).join('') : `<div class="emoji-placeholder">📦</div>`;
 
         const controlsHtml = (p.imagenes && p.imagenes.length > 1) ? `
       <div class="prod-gctrl prev" onclick="event.stopPropagation(); changeProdImg(this, -1)">⬹</div>
@@ -3675,7 +3675,6 @@
       slider.innerHTML = allSlides.map((s, i) => `
         <div class="slide ${i === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${s.image || 'https://placehold.co/1920x1080/1a1a1a/FFD000?text=HR+Ferretería'}');">
           <div class="slide-content">
-            <div class="slide-icon">${s.icon}</div>
             <h1 class="slide-title">
               ${s.t1}<br>
               <span class="o">${s.t2}</span><br>
@@ -3808,14 +3807,12 @@
             document.getElementById('sT2').value = s.t2;
             document.getElementById('sT3').value = s.t3;
             document.getElementById('sDesc').value = s.desc;
-            document.getElementById('sIcon').value = s.icon;
             document.getElementById('sImage').value = s.image;
         } else {
             document.getElementById('sT1').value = '';
             document.getElementById('sT2').value = '';
             document.getElementById('sT3').value = '';
             document.getElementById('sDesc').value = '';
-            document.getElementById('sIcon').value = '✨';
             document.getElementById('sImage').value = '';
         }
         document.getElementById('slideEditor').classList.add('show');
@@ -3828,7 +3825,6 @@
             t2: document.getElementById('sT2').value,
             t3: document.getElementById('sT3').value,
             desc: document.getElementById('sDesc').value,
-            icon: document.getElementById('sIcon').value,
             image: document.getElementById('sImage').value
         };
         if (idx >= 0) allSlides[idx] = s;
@@ -4138,18 +4134,24 @@
         document.getElementById('pNombre').value = p.nombre;
         document.getElementById('pCat').value = p.categoria;
         document.getElementById('pPrecio').value = p.precio.replace(SYMBOL_COLON, '');
-        document.getElementById('pEmoji').value = p.emoji || '📦';
         document.getElementById('pEstado').value = p.estado || 'activo';
         document.getElementById('pDesc').value = p.descripcion || '';
-        document.getElementById('pImages').value = (p.imagenes || []).join('\n');
+        
+        const imgs = p.imagenes || [];
+        document.getElementById('pImg1').value = imgs[0] || '';
+        document.getElementById('pImg2').value = imgs[1] || '';
+        document.getElementById('pImg3').value = imgs[2] || '';
+        document.getElementById('pImg4').value = imgs[3] || '';
       } else {
         document.getElementById('pNombre').value = '';
         document.getElementById('pCat').value = 'General';
         document.getElementById('pPrecio').value = '';
-        document.getElementById('pEmoji').value = '📦';
         document.getElementById('pEstado').value = 'activo';
         document.getElementById('pDesc').value = '';
-        document.getElementById('pImages').value = '';
+        document.getElementById('pImg1').value = '';
+        document.getElementById('pImg2').value = '';
+        document.getElementById('pImg3').value = '';
+        document.getElementById('pImg4').value = '';
       }
       document.getElementById('productoEditor').classList.add('show');
     }
@@ -4166,10 +4168,14 @@
         nombre: document.getElementById('pNombre').value.trim(),
         categoria: document.getElementById('pCat').value.trim(),
         precio: SYMBOL_COLON + document.getElementById('pPrecio').value.trim(),
-        emoji: document.getElementById('pEmoji').value.trim(),
         estado: document.getElementById('pEstado').value,
         descripcion: document.getElementById('pDesc').value.trim(),
-        imagenes: document.getElementById('pImages').value.split('\n').filter(url => url.trim() !== '')
+        imagenes: [
+            document.getElementById('pImg1').value.trim(),
+            document.getElementById('pImg2').value.trim(),
+            document.getElementById('pImg3').value.trim(),
+            document.getElementById('pImg4').value.trim()
+        ].filter(url => url !== '')
       };
       if (isEdit) {
         const idx = allProductos.findIndex(x => x.id === id);
@@ -4507,10 +4513,6 @@
         <textarea id="sDesc" rows="3" placeholder="Ej: Materiales de construcción para cada etapa..."></textarea>
       </div>
       <div class="dash-input-group">
-        <label>Icono / Emoji</label>
-        <input type="text" id="sIcon" placeholder="Ej: 🏗️">
-      </div>
-      <div class="dash-input-group">
         <label>Imagen Banner (Nombre de archivo)</label>
         <input type="text" id="sImage" placeholder="Ej: banner_materiales.png">
       </div>
@@ -4624,19 +4626,24 @@
         </div>
       </div>
 
-      <div class="dash-input-group">
-        <label>Descripción</label>
-        <textarea id="pDesc" rows="3" placeholder="Detalles del producto..."></textarea>
-      </div>
-
       <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
         <div class="dash-input-group">
-          <label>Icono / Emoji (si no hay imagen)</label>
-          <input type="text" id="pEmoji" placeholder="Ej: 🛠️">
+          <label>URL Imagen 1 (Principal)</label>
+          <input type="text" id="pImg1" placeholder="https://...">
         </div>
         <div class="dash-input-group">
-          <label>URLs de Imágenes (Una por línea)</label>
-          <textarea id="pImages" rows="2" placeholder="https://..."></textarea>
+          <label>URL Imagen 2</label>
+          <input type="text" id="pImg2" placeholder="https://...">
+        </div>
+      </div>
+      <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="dash-input-group">
+          <label>URL Imagen 3</label>
+          <input type="text" id="pImg3" placeholder="https://...">
+        </div>
+        <div class="dash-input-group">
+          <label>URL Imagen 4</label>
+          <input type="text" id="pImg4" placeholder="https://...">
         </div>
       </div>
 
