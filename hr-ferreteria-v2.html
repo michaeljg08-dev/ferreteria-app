@@ -2171,12 +2171,217 @@
       bottom: 0;
       background: var(--negro);
       z-index: 2500;
-      overflow-y: auto;
-      padding: 2rem;
+      flex-direction: row;
+      overflow: hidden;
     }
 
     .admin-dash.show {
+      display: flex;
+    }
+
+    .dash-sidebar {
+      width: 250px;
+      background: var(--gris-oscuro);
+      border-right: 1px solid var(--gris-borde);
+      display: flex;
+      flex-direction: column;
+      z-index: 2;
+    }
+
+    .dash-sidebar-header {
+      padding: 2rem 1.5rem;
+      border-bottom: 1px solid var(--gris-borde);
+    }
+
+    .dash-sidebar-header h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .dash-sidebar-header span {
+      font-size: 0.7rem;
+      color: var(--amarillo);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .dash-nav {
+      flex: 1;
+      padding: 1.5rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .dash-nav-btn {
+      width: 100%;
+      padding: 1rem;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--gris-texto);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+
+    .dash-nav-btn i {
+      font-size: 1.1rem;
+    }
+
+    .dash-nav-btn:hover {
+      color: var(--amarillo);
+      background: rgba(255, 208, 0, 0.05);
+    }
+
+    .dash-nav-btn.active {
+      background: var(--amarillo);
+      color: var(--negro);
+      border-color: var(--amarillo);
+    }
+
+    .dash-sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--gris-borde);
+    }
+
+    .dash-main {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--negro);
+      position: relative;
+    }
+
+    .dash-content-header {
+      padding: 2rem 3rem;
+      border-bottom: 1px solid var(--gris-borde);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.8);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .dash-page {
+      display: none;
+      padding: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .dash-page.active {
       display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Product Table styles */
+    .dash-table-wrap {
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .dash-table th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem;
+      text-align: left;
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amarillo);
+      border-bottom: 1px solid var(--gris-borde);
+    }
+
+    .dash-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--gris-texto);
+    }
+
+    .dash-table tr:hover td {
+      background: rgba(255, 208, 0, 0.02);
+    }
+
+    .dash-table .t-icon {
+      font-size: 1.5rem;
+    }
+
+    .dash-table .t-name {
+      font-weight: 700;
+      color: var(--blanco);
+    }
+
+    .dash-table .t-status {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .dash-table .t-status.activo { background: rgba(37, 211, 102, 0.15); color: #25D366; }
+    .dash-table .t-status.oferta { background: rgba(255, 208, 0, 0.15); color: var(--amarillo); }
+
+    .btn-action {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: 1px solid var(--gris-borde);
+      background: transparent;
+      color: var(--blanco);
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover { background: var(--amarillo); color: var(--negro); }
+    .btn-action.delete:hover { background: #ff4444; border-color: #ff4444; color: #fff; }
+
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--amarillo);
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gris-texto);
     }
 
     /* """"""""""""""""""""""""""""""
@@ -2714,50 +2919,11 @@
 
 
   <section id="servicios">
-    <div class="section-label">Nuestras Áreas</div>
-    <h2 class="section-title">Servicios <span class="o">Integrales</span></h2>
-    <div class="servicios-grid" id="serviciosGrid">
-      <div class="srv-card">
-        <div class="srv-num">01</div><span class="srv-icon">🏗️</span>
-        <div class="srv-name">MATERIALES PARA LA CONSTRUCCIÓN</div>
-        <p class="srv-desc">Ofrecemos una amplia gama de materiales para la construcción y trabajamos con los mejores y
-          mas reconocidos aliados comerciales.</p>
-      </div>
-
-      <div class="srv-card">
-        <div class="srv-num">02</div><span class="srv-icon">⚡</span>
-        <div class="srv-name">Herramientas Eléctricas</div>
-        <p class="srv-desc">Taladros, amoladoras, sierras circulares y más de las mejores marcas: DeWalt, Makita, Bosch.
-        </p>
-      </div>
-
-      <div class="srv-card">
-        <div class="srv-num">03</div><span class="srv-icon"><img src="concrete-mixer.png"
-            alt="mezcladora de concreto"></span>
-        <div class="srv-name">ALQUILER DE MAQUINARIA</div>
-        <p class="srv-desc">Contamos con alquiler de maquinaria necesaria para la optimización de su construcción.
-          .
-        </p>
-      </div>
-
-      <div class="srv-card">
-        <div class="srv-num">04</div><span class="srv-icon">🎨</span>
-        <div class="srv-name">Pintura &amp; Acabados</div>
-        <p class="srv-desc">Pinturas de interior y exterior, selladores, masillas y accesorios para un acabado perfecto.
-        </p>
-      </div>
-
-      <div class="srv-card">
-        <div class="srv-num">05</div><span class="srv-icon">🚛</span>
-        <div class="srv-name">Entrega a Domicilio</div>
-        <p class="srv-desc">Enviamos tu pedido directamente a la obra o tu hogar. Rápido, seguro y en todo el país.</p>
-      </div>
-
-      <div class="srv-card">
-        <div class="srv-num">06</div><span class="srv-icon">🤝</span>
-        <div class="srv-name">Asesoría Técnica</div>
-        <p class="srv-desc">Nuestros expertos te guían en la selección del material correcto para cada tipo de proyecto.
-        </p>
+    <div class="container reveal">
+      <div class="section-label">Nuestras Áreas</div>
+      <h2 class="section-title">Servicios <span class="o">Integrales</span></h2>
+      <div class="servicios-grid" id="serviciosGrid">
+        <!-- Cargado dinámicamente por JS -->
       </div>
     </div>
   </section>
@@ -2821,197 +2987,23 @@
 
   <!-- ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   NOSOTROS ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   -->
   <section id="nosotros">
-    <div class="nos-wrap reveal">
-      <div class="nos-img-box">🏠</div>
-      <div class="nos-tag">Desde el 2000</div>
-      <div class="nos-border"></div>
-    </div>
-    <div class="reveal">
-      <div class="section-label">Quiénes somos</div>
-      <h2 class="section-title" style="margin-bottom:1.4rem">Más de 25 años<br><span
-          class="o">construyendo</span><br>confianza</h2>
-      <p class="nos-p">Somos un negocio familiar que nació de la necesidad de emprender en el año 2000, en una ventanita
-        de nuestra casa.</p>
-      <p class="nos-p">En el año 2002 nos mudamos a nuestro primer local comercial llamado Ferretería HR Santa Clara y
-        nuestro crecimiento nos permitió abrir nuestra segunda sucursal en el año 2015 llamada Ferretería HR Valle Azul.
-        <br><br>Desde entonces nos hemos enfocado en el crecimiento orgánico de ambas sucursales buscando siempre la
-        mejoría
-        de
-        nuestros servicios.
-      </p>
-      <div class="valores">
-        <div class="valor">✅ Calidad garantizada en todos nuestros productos</div>
-        <div class="valor">🤝 Atención personalizada y asesoría técnica gratuita</div>
-        <div class="valor">💰 Precios competitivos y opciones de crédito</div>
-        <div class="valor">🚚 Servicio de entrega en la zona</div>
-      </div>
+    <div class="container reveal" id="nosotrosContent">
+      <!-- Cargado dinámicamente -->
     </div>
   </section>
 
   <!-- ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   CONTACTO ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   -->
   <section id="contacto">
-    <div class="reveal">
+    <div class="container reveal">
       <div class="section-label">Hablemos</div>
       <h2 class="section-title">Nuestras <span class="o">Sucursales</span></h2>
-    </div>
-
-    <!-- Tabs -->
-    <div class="suc-tabs reveal" style="margin-top:2.5rem;">
-      <div class="suc-tab on" onclick="switchSuc(1)">
-        <div class="tab-dot"></div> 🏠 Santa Clara
-      </div>
-      <div class="suc-tab" onclick="switchSuc(2)">
-        <div class="tab-dot"></div> 🏠 Valle Azul
-      </div>
-    </div>
-
-    <!-- Panel Sucursal 1: SANTA CLARA -->
-    <div class="suc-panel on reveal" id="suc1">
-      <div class="suc-info-block">
-        <!--div class="suc-nombre"><span>HR</span> Ferretería</div>-->
-        <div class="suc-subtitulo">Sucursal Santa Clara · Florencia</div>
-
-        <div class="i-item">
-          <div class="i-ico">📍</div>
-          <div>
-            <div class="i-label">Dirección</div>
-            <div class="i-val">800 metros norte de la plaza de deportes<br>de Santa Clara, Florencia</div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">📞</div>
-          <div>
-            <div class="i-label">Teléfono</div>
-            <div class="i-val"><a href="tel:+50624756465">2475-6465</a></div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">💬</div>
-          <div>
-            <div class="i-label">WhatsApp</div>
-            <div class="i-val"><a href="https://wa.me/50685841660" target="_blank">8584-1660</a></div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">⏰</div>
-          <div>
-            <div class="i-label">Horario</div>
-            <div class="i-val">
-              Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>
-              Sábados: 7:00am — 3:30pm
-            </div>
-          </div>
-        </div>
-
-        <a class="wa-link" href="https://wa.me/50685841660" target="_blank">
-          💬 Escribir por WhatsApp
-        </a>
+      
+      <!-- Tabs cargados por JS -->
+      <div class="suc-tabs reveal" id="sucursalesTabs" style="margin-top:2.5rem;">
       </div>
 
-      <div class="suc-right">
-        <div class="mapa-box">
-          <div class="mapa-grid-bg"></div>
-          <div class="mapa-pin">
-            <div class="mapa-pin-ico">📍</div>
-            <div class="mapa-pin-lbl">Santa Clara · Florencia, CR</div>
-          </div>
-        </div>
-        <div>
-          <div class="form-grid">
-            <div class="f-group"><label>Nombre</label><input type="text" placeholder="Tu nombre completo"></div>
-            <div class="f-group"><label>Teléfono</label><input type="tel" placeholder="+506 0000-0000"></div>
-            <div class="f-group"><label>Correo electrónico</label><input type="email" placeholder="correo@ejemplo.com">
-            </div>
-            <div class="f-group"><label>Asunto</label>
-              <select>
-                <option value="">Seleccionar...</option>
-                <option>Consulta de producto</option>
-                <option>Cotización de proyecto</option>
-                <option>Entrega a domicilio</option>
-                <option>Asesoría técnica</option>
-                <option>Otro</option>
-              </select>
-            </div>
-            <div class="f-group full"><label>Mensaje</label><textarea
-                placeholder="Escribinos a la sucursal Santa Clara..."></textarea></div>
-          </div>
-          <button class="f-submit" onclick="submitForm(this)">Enviar a Santa Clara 🚀</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Panel Sucursal 2: VALLE AZUL -->
-    <div class="suc-panel reveal" id="suc2">
-      <div class="suc-info-block">
-        <!-- <div class="suc-nombre"><span>HR</span> Ferretería</div> -->
-        <div class="suc-subtitulo">Sucursal Valle Azul · San Ramón</div>
-
-        <div class="i-item">
-          <div class="i-ico">📍</div>
-          <div>
-            <div class="i-label">Dirección</div>
-            <div class="i-val">200 metros sur de la plaza de deportes<br>de Valle Azul, San Lorenzo, San Ramón</div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">📞</div>
-          <div>
-            <div class="i-label">Teléfono</div>
-            <div class="i-val"><a href="tel:+50689952476">8995-2476</a></div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">💬</div>
-          <div>
-            <div class="i-label">WhatsApp</div>
-            <div class="i-val"><a href="https://wa.me/50689852476" target="_blank">8985-2476</a></div>
-          </div>
-        </div>
-        <div class="i-item">
-          <div class="i-ico">⏰</div>
-          <div>
-            <div class="i-label">Horario</div>
-            <div class="i-val">
-              Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>
-              Sábados: 7:00am — 12:00pm · 1:00pm — 4:00pm
-            </div>
-          </div>
-        </div>
-
-        <a class="wa-link" href="https://wa.me/50689852476" target="_blank">
-          💬 Escribir por WhatsApp
-        </a>
-      </div>
-
-      <div class="suc-right">
-        <div class="mapa-box">
-          <div class="mapa-grid-bg"></div>
-          <div class="mapa-pin">
-            <div class="mapa-pin-ico">📍</div>
-            <div class="mapa-pin-lbl">Valle Azul · San Ramón, CR</div>
-          </div>
-        </div>
-        <div>
-          <div class="form-grid">
-            <div class="f-group"><label>Nombre</label><input type="text" placeholder="Tu nombre completo"></div>
-            <div class="f-group"><label>Teléfono</label><input type="tel" placeholder="+506 0000-0000"></div>
-            <div class="f-group"><label>Correo electrónico</label><input type="email" placeholder="correo@ejemplo.com">
-            </div>
-            <div class="f-group"><label>Asunto</label>
-              <select>
-                <option value="">Seleccionar...</option>
-                <option>Consulta de producto</option>
-                <option>Cotización de proyecto</option>
-                <option>Entrega a domicilio</option>
-                <option>Asesoría técnica</option>
-                <option>Otro</option>
-              </select>
-            </div>
-            <div class="f-group full"><label>Mensaje</label><textarea
-                placeholder="Escribinos a la sucursal Valle Azul..."></textarea></div>
-          </div>
-          <button class="f-submit" onclick="submitForm(this)">Enviar a Valle Azul 🚀</button>
-        </div>
+      <!-- Paneles cargados por JS -->
+      <div id="sucursalesPanels">
       </div>
     </div>
   </section>
@@ -3039,21 +3031,11 @@
       <div class="foot-col">
         <h4>Categorías</h4>
         <ul class="foot-links" id="footCats">
-          <li><a
-              href="file:///C:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app/hr-ferreteria-v2.html#catalogo"
-              onclick="filtrar(null,&#39;Construcción&#39;)">Construcción</a></li>
-          <li><a
-              href="file:///C:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app/hr-ferreteria-v2.html#catalogo"
-              onclick="filtrar(null,&#39;Eléctrico&#39;)">Eléctrico</a></li>
-          <li><a
-              href="file:///C:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app/hr-ferreteria-v2.html#catalogo"
-              onclick="filtrar(null,&#39;Fijación&#39;)">Fijación</a></li>
-          <li><a
-              href="file:///C:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app/hr-ferreteria-v2.html#catalogo"
-              onclick="filtrar(null,&#39;Fontanería&#39;)">Fontanería</a></li>
-          <li><a
-              href="file:///C:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app/hr-ferreteria-v2.html#catalogo"
-              onclick="filtrar(null,&#39;Herramientas&#39;)">Herramientas</a></li>
+          <li><a href="#catalogo" onclick="filtrar(null,'Construcción')">Construcción</a></li>
+          <li><a href="#catalogo" onclick="filtrar(null,'Eléctrico')">Eléctrico</a></li>
+          <li><a href="#catalogo" onclick="filtrar(null,'Fijación')">Fijación</a></li>
+          <li><a href="#catalogo" onclick="filtrar(null,'Fontanería')">Fontanería</a></li>
+          <li><a href="#catalogo" onclick="filtrar(null,'Herramientas')">Herramientas</a></li>
         </ul>
       </div>
     </div>
@@ -3114,35 +3096,61 @@
     }
 
 
-    /* ════════ CONFIG TOGGLE ════════ */
-    function toggleConfig() {
-      const cfg = document.getElementById('sheetsConfig');
-      if (cfg) cfg.classList.toggle('show');
-    }
+    /* ════════ CONFIG DASHBOARD TABS ════════ */
+    window.switchDashTab = function (tabId) {
+      document.querySelectorAll('.dash-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.dash-nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (btn) btn.classList.add('active');
+
+      // Update Header Title
+      const titleMap = {
+        'tab-inventario': '📦 Gestión de Inventario',
+        'tab-slider': '🖼️ Mantenimiento de Carrusel',
+        'tab-servicios': '🛠️ Gestión de Servicios',
+        'tab-nosotros': '📄 Información de Empresa',
+        'tab-sucursales': '📍 Sedes y Sucursales'
+      };
+      if (document.getElementById('dashCurrentTitle')) {
+        document.getElementById('dashCurrentTitle').innerText = titleMap[tabId] || 'Panel de Control';
+      }
+
+      if (tabId === 'tab-inventario') renderDashProductos();
+      if (tabId === 'tab-slider') renderDashSlides();
+      if (tabId === 'tab-nosotros') {
+          const p1 = localStorage.getItem('hr_nosP1_v2') || 'Nuestra historia...';
+          document.getElementById('nosSummary').innerText = p1.substring(0, 150) + '...';
+      }
+    };
 
     /* 
-       CATÁLOGO - Google Sheets
-       
-       Datos de demostración (se reemplazan
-       automáticamente cuando conectás tu Sheet)
+       CATÁLOGO - Gestión Local
      */
     const DEMO_PRODUCTOS = [
-      { id: 1, nombre: 'Martillo Profesional 16oz', categoria: 'Herramientas', precio: '\u20A112.500', imagenes: [], emoji: 'x', descripcion: 'Martillo de acero forjado de alta resistencia con mango ergonómico antideslizante. Ideal para trabajos pesados y carpintería profesional.', estado: 'activo' },
-      { id: 2, nombre: 'Taladro DeWalt 18V', categoria: 'Herramientas', precio: '\u20A189.000', imagenes: [], emoji: '⚡', descripcion: 'Taladro percutor inalámbrico con batería de litio de 18V. Incluye maletín de transporte y cargador rápido. 2 velocidades mecánicas.', estado: 'oferta' },
-      { id: 3, nombre: 'Sierra Circular Bosch', categoria: 'Herramientas', precio: '\u20A1125.000', imagenes: [], emoji: 'xa', descripcion: 'Sierra circular de 1800W con disco de 7-1/4 pulgadas. Gran capacidad de corte y precisión milimétrica.', estado: 'activo' },
-      { id: 4, nombre: 'Cemento Extra 50kg', categoria: 'Construcción', precio: '\u20A18.900', imagenes: [], emoji: 'x', descripcion: 'Cemento gris de alta calidad para estructuras y acabados. Secado ultra resistente.', estado: 'activo' },
-      { id: 5, nombre: 'Varilla 3/8" x 6m', categoria: 'Construcción', precio: '\u20A15.200', imagenes: [], emoji: '🧱', descripcion: 'Varilla corrugada de hierro para refuerzo de concreto. Medida estándar de 6 metros.', estado: 'activo' },
-      { id: 6, nombre: 'Bloque 20x20x40', categoria: 'Construcción', precio: '\u20A1680', imagenes: [], emoji: 'x', descripcion: 'Bloque de concreto vibrado de alta densidad. Ideal para muros de contención y paredes estructurales.', estado: 'activo' },
-      { id: 7, nombre: 'Panel Eléctrico 12 ctos', categoria: 'Eléctrico', precio: '\u20A145.000', imagenes: [], emoji: 'x', descripcion: 'Centro de carga para 12 circuitos. Incluye barra de neutro y tierra. Pintura electrostática.', estado: 'oferta' },
-      { id: 8, nombre: 'Cable THHN #12', categoria: 'Eléctrico', precio: '\u20A1320/m', imagenes: [], emoji: 'xR', descripcion: 'Cable eléctrico de cobre con aislamiento termoplástico. Resistente al calor y humedad.', estado: 'activo' },
-      { id: 9, nombre: 'Pintura Exterior 4L', categoria: 'Pintura', precio: '\u20A122.000', imagenes: [], emoji: '🎨', descripcion: 'Pintura acrílica de alta protección contra rayos UV y lluvia. Lavable y de larga duración.', estado: 'activo' },
-      { id: 10, nombre: 'Kit PVC 1/2" completo', categoria: 'Fontanería', precio: '\u20A16.800', imagenes: [], emoji: 'x', descripcion: 'Kit de instalación básica para agua potable. Incluye codos, uniones y pegamento.', estado: 'activo' },
-      { id: 11, nombre: 'Set Tornillos Galv.', categoria: 'Fijación', precio: '\u20A14.200', imagenes: [], emoji: 'x', descripcion: 'Caja con 500 tornillos galvanizados de 1 pulgada para madera y drywall.', estado: 'activo' },
-      { id: 12, nombre: 'Nivel Láser', categoria: 'Herramientas', precio: '\u20A168.000', imagenes: [], emoji: 'x ', descripcion: 'Nivel láser autonivelante con luz roja. Alcance de 15 metros. Incluye soporte de pared.', estado: 'activo' },
+      { id: 1, nombre: 'Martillo Profesional 16oz', categoria: 'Herramientas', precio: '\u20A112.500', imagenes: [], emoji: '🛠️', descripcion: 'Martillo de acero forjado de alta resistencia con mango ergonómico antideslizante.', estado: 'activo' },
+      { id: 2, nombre: 'Taladro DeWalt 18V', categoria: 'Herramientas', precio: '\u20A189.000', imagenes: [], emoji: '⚡', descripcion: 'Taladro percutor inalámbrico con batería de litio de 18V.', estado: 'oferta' },
+      { id: 3, nombre: 'Sierra Circular Bosch', categoria: 'Herramientas', precio: '\u20A1125.000', imagenes: [], emoji: '🪚', descripcion: 'Sierra circular de 1800W con disco de 7-1/4 pulgadas.', estado: 'activo' }
     ];
 
 
+    const SYMBOL_COLON = '\u20A1';
     let allProductos = [];
+    let allSlides = [];
+    let allServicios = [];
+    let allSucursales = [];
+    let nosotrosData = {};
+    
+    // Exportar globales para UI
+    window.SYMBOL_COLON = SYMBOL_COLON;
+    window.allProductos = allProductos;
+    window.allSlides = allSlides;
+    window.allServicios = allServicios;
+    window.allSucursales = allSucursales;
+    window.nosotrosData = nosotrosData;
     let filtroActivo = 'todos';
     let paginaActual = 1;
     const POR_PAGINA = 8;
@@ -3359,7 +3367,8 @@
     function irPagina(n) {
       paginaActual = n;
       renderProductos();
-      document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+      const el = document.getElementById('catalogo');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function setStatus(type, msg) {
@@ -3382,11 +3391,8 @@
 
 
 
-    let allSlides = [];
-
     function loadSlides() {
       const saved = localStorage.getItem('hr_slides_v2');
-      // Forzamos actualización de slides por si hay datos viejos en storage
       allSlides = [
         { t1: 'TODO LO QUE', t2: 'NECESITAS', t3: 'CONSTRUIR', desc: 'Herramientas profesionales, materiales de construcción y asesoría técnica especializada. En HR Ferretería encontrás todo para tus proyectos.', icon: '🏗️', image: 'banner_materiales.png' },
         { t1: 'HERRAMIENTAS DE', t2: 'PODER Y', t3: 'PRECISIÓN', desc: 'Las mejores marcas del mercado con garantía y respaldo técnico. Maximiza tu productividad.', icon: '⚡', image: 'banner_herramientas.png' },
@@ -3395,91 +3401,448 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // Conservamos del storage solo si la estructura parece moderna
-          if (parsed.length > 0 && parsed[0].t3 !== undefined) allSlides = parsed;
+          if (parsed.length > 0) allSlides = parsed;
         } catch (e) { }
       }
     }
 
-
-
-
-    function renderHeroSlides() {
-      const container = document.getElementById('slides-container');
-      const dotsContainer = document.querySelector('.slider-dots');
-      const counterTotal = document.querySelector('.slide-counter strong');
-
-      if (!container) return;
-
-      container.innerHTML = '';
-      if (dotsContainer) dotsContainer.innerHTML = '';
-
-      allSlides.forEach((s, idx) => {
-        const slide = document.createElement('div');
-        slide.className = `slide slide-${idx + 1} ${idx === 0 ? 'active' : ''}`;
-        if (s.image) {
-          slide.style.backgroundImage = `url('${s.image}')`;
-        }
-        slide.innerHTML = `
-            <div class="slide-content">
-                <div class="slide-badge">Somos su principal herramienta</div>
-                <h1>
-                    <span class="w">${s.t1}</span>
-                    <span class="y">${s.t2}</span>
-                    <span class="o">${s.t3}</span>
-                </h1>
-                <p class="slide-desc">${s.desc}</p>
-                <div class="slide-btns">
-                    <a href="#catalogo" class="btn-p">Ver Productos</a>
-                    <a href="#nosotros" class="btn-s">Nosotros</a>
-                </div>
-            </div>
-            <div class="slide-visual">
-                <div class="vis-box">
-                    <div class="vis-ring"></div><div class="vis-ring"></div><div class="vis-ring"></div>
-                    <div class="vis-icon">${s.icon || '✨'}</div>
-                </div>
-            </div>
-        `;
-        container.appendChild(slide);
-
-        if (dotsContainer) {
-          const dot = document.createElement('div');
-          dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-          dotsContainer.appendChild(dot);
-        }
-      });
-
-      if (counterTotal) counterTotal.textContent = allSlides.length;
+    function loadServicios() {
+      const saved = localStorage.getItem('hr_servicios_v2');
+      allServicios = [
+        { id: 1, icon: '🏗️', name: 'MATERIALES PARA LA CONSTRUCCIÓN', desc: 'Ofrecemos una amplia gama de materiales para la construcción y trabajamos con los mejores y mas reconocidos aliados comerciales.' },
+        { id: 2, icon: '⚡', name: 'Herramientas Eléctricas', desc: 'Taladros, amoladoras, sierras circulares y más de las mejores marcas: DeWalt, Makita, Bosch.' },
+        { id: 3, icon: '🚜', name: 'ALQUILER DE MAQUINARIA', desc: 'Contamos con alquiler de maquinaria necesaria para la optimización de su construcción.' },
+        { id: 4, icon: '🎨', name: 'Pintura & Acabados', desc: 'Pinturas de interior y exterior, selladores, masillas y accesorios para un acabado perfecto.' },
+        { id: 5, icon: '🚛', name: 'Entrega a Domicilio', desc: 'Enviamos tu pedido directamente a la obra o tu hogar. Rápido, seguro y en todo el país.' },
+        { id: 6, icon: '🤝', name: 'Asesoría Técnica', desc: 'Nuestros expertos te guían en la selección del material correcto para cada tipo de proyecto.' }
+      ];
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.length > 0) allServicios = parsed;
+        } catch (e) { }
+      }
     }
 
+    function renderServicios() {
+      const grid = document.getElementById('serviciosGrid');
+      if (!grid) return;
+      grid.innerHTML = allServicios.map((s, idx) => `
+        <div class="srv-card">
+          <div class="srv-num">0${idx + 1}</div>
+          <span class="srv-icon">${s.icon}</span>
+          <div class="srv-name">${s.name}</div>
+          <p class="srv-desc">${s.desc}</p>
+        </div>
+      `).join('');
+    }
 
+    function loadNosotros() {
+      const saved = localStorage.getItem('hr_nosotros_v2');
+      nosotrosData = {
+        tag: 'Desde el 2000',
+        title: 'Más de 25 años<br><span class="o">construyendo</span><br>confianza',
+        p1: 'Somos un negocio familiar que nació de la necesidad de emprender en el año 2000, en una ventanita de nuestra casa.',
+        p2: 'En el año 2002 nos mudamos a nuestro primer local comercial llamado Ferretería HR Santa Clara y nuestro crecimiento nos permitió abrir nuestra segunda sucursal en el año 2015 llamada Ferretería HR Valle Azul. <br><br>Desde entonces nos hemos enfocado en el crecimiento orgánico de ambas sucursales buscando siempre la mejoría de nuestros servicios.',
+        valores: [
+          '✅ Calidad garantizada en todos nuestros productos',
+          '🤝 Atención personalizada y asesoría técnica gratuita',
+          '💰 Precios competitivos y opciones de crédito',
+          '🚚 Servicio de entrega en la zona'
+        ]
+      };
+      if (saved) {
+        try {
+          nosotrosData = JSON.parse(saved);
+        } catch (e) { }
+      }
+  }
+  
+  function loadSucursales() {
+      const saved = localStorage.getItem('hr_sucursales_v2');
+      allSucursales = [
+        {
+          id: 1, tabName: 'Santa Clara', title: 'Sucursal Santa Clara · Florencia',
+          address: '800 metros norte de la plaza de deportes<br>de Santa Clara, Florencia',
+          mapLabel: 'Santa Clara · Florencia, CR', phone: '2475-6465', phoneVal: '+50624756465',
+          whatsapp: '8584-1660', whatsappVal: '50685841660', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 3:30pm'
+        },
+        {
+          id: 2, tabName: 'Valle Azul', title: 'Sucursal Valle Azul · San Ramón',
+          address: '200 metros sur de la plaza de deportes<br>de Valle Azul, San Lorenzo, San Ramón',
+          mapLabel: 'Valle Azul · San Ramón, CR', phone: '8995-2476', phoneVal: '+50689952476',
+          whatsapp: '8985-2476', whatsappVal: '50689852476', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 12:00pm · 1:00pm — 4:00pm'
+        }
+      ];
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.length > 0) allSucursales = parsed;
+        } catch (e) { }
+      }
+    }
+
+    function initApp() {
+      loadSlides();
+      loadServicios();
+      loadNosotros();
+      loadSucursales();
+      
+      // Intentar cargar productos locales primero
+      const savedProds = localStorage.getItem('hr_productos_local_v2');
+      if (savedProds) {
+          allProductos = JSON.parse(savedProds);
+      } else {
+          allProductos = [...DEMO_PRODUCTOS];
+      }
+
+      renderHeroSlides();
+      renderProductos();
+      renderFiltros(allProductos);
+      renderServicios();
+      renderNosotros();
+      renderSucursales();
+
+      // Exportar funciones de gestión de servicios
+      window.openServiciosManager = function() {
+        renderDashServicios();
+        document.getElementById('serviciosManager').classList.add('show');
+      };
+      window.closeServiciosManager = function() {
+        document.getElementById('serviciosManager').classList.remove('show');
+      };
+      window.renderDashServicios = function() {
+        const list = document.getElementById('serviciosEditList');
+        if (!list) return;
+        list.innerHTML = allServicios.map(s => `
+          <div onclick="editServicio(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
+              <span style="font-size:1.5rem;">${s.icon}</span>
+              <div>
+                  <div style="font-weight:bold; color:var(--amarillo);">${s.name}</div>
+                  <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
+              </div>
+          </div>
+        `).join('');
+      };
+      window.editServicio = function(id) {
+        const s = allServicios.find(x => x.id == id);
+        if (!s) return;
+        document.getElementById('editServicioId').value = s.id;
+        document.getElementById('serIcon').value = s.icon;
+        document.getElementById('serName').value = s.name;
+        document.getElementById('serDesc').value = s.desc;
+        document.getElementById('servicioEditor').classList.add('show');
+      };
+      window.closeServicioEditor = function() {
+        document.getElementById('servicioEditor').classList.remove('show');
+      };
+      window.saveServicio = function() {
+        const id = document.getElementById('editServicioId').value;
+        const s = allServicios.find(x => x.id == id);
+        if (s) {
+          s.icon = document.getElementById('serIcon').value;
+          s.name = document.getElementById('serName').value;
+          s.desc = document.getElementById('serDesc').value;
+          localStorage.setItem('hr_servicios_v2', JSON.stringify(allServicios));
+          renderServicios();
+          renderDashServicios();
+          closeServicioEditor();
+        }
+      };
+
+      // Exportar funciones de gestión de Nosotros
+      window.openNosotrosEditor = function() {
+        document.getElementById('nosTag').value = nosotrosData.tag;
+        document.getElementById('nosTitle').value = nosotrosData.title;
+        document.getElementById('nosP1').value = nosotrosData.p1;
+        document.getElementById('nosP2').value = nosotrosData.p2;
+        document.getElementById('nosValores').value = (nosotrosData.valores || []).join('\n');
+        document.getElementById('nosotrosEditor').classList.add('show');
+      };
+      window.closeNosotrosEditor = function() {
+        document.getElementById('nosotrosEditor').classList.remove('show');
+      };
+      window.saveNosotros = function() {
+        nosotrosData = {
+          tag: document.getElementById('nosTag').value,
+          title: document.getElementById('nosTitle').value,
+          p1: document.getElementById('nosP1').value,
+          p2: document.getElementById('nosP2').value,
+          valores: document.getElementById('nosValores').value.split('\n').filter(v => v.trim() !== '')
+        };
+        localStorage.setItem('hr_nosotros_v2', JSON.stringify(nosotrosData));
+        renderNosotros();
+        if (document.getElementById('nosSummary')) {
+           document.getElementById('nosSummary').innerText = nosotrosData.p1.substring(0, 150) + '...';
+        }
+        closeNosotrosEditor();
+      };
+
+      // Exportar funciones de gestión de Sucursales
+      window.openSucursalesManager = function() {
+        renderDashSucursales();
+        document.getElementById('sucursalesManager').classList.add('show');
+      };
+      window.closeSucursalesManager = function() {
+        document.getElementById('sucursalesManager').classList.remove('show');
+      };
+      window.editSucursal = function(id) {
+        const s = allSucursales.find(x => x.id == id);
+        if (!s) return;
+        document.getElementById('editSucursalId').value = s.id;
+        document.getElementById('sucTabName').value = s.tabName;
+        document.getElementById('sucTitle').value = s.title;
+        document.getElementById('sucAddress').value = s.address;
+        document.getElementById('sucMapLabel').value = s.mapLabel;
+        document.getElementById('sucPhone').value = s.phone;
+        document.getElementById('sucWhatsapp').value = s.whatsapp;
+        document.getElementById('sucSchedule').value = s.schedule;
+        document.getElementById('sucursalEditor').classList.add('show');
+      };
+      window.closeSucursalEditor = function() {
+        document.getElementById('sucursalEditor').classList.remove('show');
+      };
+      window.saveSucursal = function() {
+        const id = document.getElementById('editSucursalId').value;
+        const s = allSucursales.find(x => x.id == id);
+        if (s) {
+          s.tabName = document.getElementById('sucTabName').value;
+          s.title = document.getElementById('sucTitle').value;
+          s.address = document.getElementById('sucAddress').value;
+          s.mapLabel = document.getElementById('sucMapLabel').value;
+          s.phone = document.getElementById('sucPhone').value;
+          s.whatsapp = document.getElementById('sucWhatsapp').value;
+          s.schedule = document.getElementById('sucSchedule').value;
+          s.phoneVal = '+506' + s.phone.replace(/[^0-9]/g, '');
+          s.whatsappVal = '506' + s.whatsapp.replace(/[^0-9]/g, '');
+          
+          localStorage.setItem('hr_sucursales_v2', JSON.stringify(allSucursales));
+          renderSucursales();
+          renderDashSucursales();
+          closeSucursalEditor();
+        }
+      };
+
+      initSlider();
+      initNav();
+      initReveal();
+
+      // Fallback a sync si hay URL pero no local prods
+      const sheetUrl = localStorage.getItem('hr_sheet_url');
+      if (sheetUrl && !savedProds) syncCatalog(sheetUrl, true);
+
+      // Exportar funciones base y de sesión
+      window.toggleLogin = (show) => {
+        const modal = document.getElementById('loginModal');
+        if (modal) modal.classList.toggle('show', show);
+      };
+      window.doLogin = () => {
+        const u = document.getElementById('adminUser').value;
+        const p = document.getElementById('adminPass').value;
+        if (u === 'admin' && p === '12345') {
+          window.toggleLogin(false);
+          document.getElementById('adminDash').classList.add('show');
+          renderDashSlides();
+          renderDashServicios();
+          renderDashSucursales();
+        } else alert('Credenciales incorrectas');
+      };
+      window.closeDash = () => document.getElementById('adminDash').classList.remove('show');
+      window.closeModal = () => {
+        const d = document.getElementById('detalle');
+        if (d) d.classList.remove('show');
+        document.body.style.overflow = '';
+      };
+      window.switchSuc = (id) => {
+        const tabs = document.querySelectorAll('.suc-tab');
+        const panels = document.querySelectorAll('.suc-panel');
+        tabs.forEach(t => t.classList.remove('on'));
+        panels.forEach(p => p.classList.remove('on'));
+        const tab = document.querySelector(`[onclick="switchSuc(${id})"]`);
+        if (tab) tab.classList.add('on');
+        const pan = document.getElementById(`suc${id}`);
+        if (pan) pan.classList.add('on');
+      };
+      window.submitForm = (btn) => {
+        alert('Mensaje enviado. ¡Nos contactaremos pronto!');
+        btn.closest('.suc-panel').querySelectorAll('input, select, textarea').forEach(i => i.value = '');
+      };
+    }
+
+    function renderHeroSlides() {
+      const slider = document.querySelector('.hero-slider');
+      if (!slider) return;
+      slider.innerHTML = allSlides.map((s, i) => `
+        <div class="slide ${i === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${s.image || 'https://placehold.co/1920x1080/1a1a1a/FFD000?text=HR+Ferretería'}');">
+          <div class="slide-content">
+            <div class="slide-icon">${s.icon}</div>
+            <h1 class="slide-title">
+              ${s.t1}<br>
+              <span class="o">${s.t2}</span><br>
+              ${s.t3}
+            </h1>
+            <p class="slide-desc">${s.desc}</p>
+            <div class="slide-actions">
+              <a href="#catalogo" class="btn-primary">Ver Catálogo 📦</a>
+              <a href="#contacto" class="btn-secondary">Sucursales 📍</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      const total = document.querySelector('.total strong');
+      if (total) total.innerText = allSlides.length;
+    }
 
     function renderDashSlides() {
       const list = document.getElementById('dashSlidesList');
       if (!list) return;
-      list.innerHTML = '';
-      allSlides.forEach((s, idx) => {
-        const item = document.createElement('div');
-        item.style.marginBottom = '0.5rem';
-        item.style.padding = '0.7rem';
-        item.style.background = 'rgba(255,255,255,0.03)';
-        item.style.border = '1px solid var(--gris-borde)';
-        item.style.display = 'flex';
-        item.style.justifyContent = 'space-between';
-        item.style.alignItems = 'center';
-        item.innerHTML = `
-            <div style="font-size:0.85rem">
-                <span style="color:var(--amarillo)">#${idx + 1}</span> <strong>${s.t1} ${s.t2}</strong>
-            </div>
-            <div style="display:flex; gap:0.5rem">
-                <button onclick="editSlide(${idx})" class="btn-dash" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:var(--gris-medio); border:1px solid var(--gris-borde); color:var(--blanco); cursor:pointer">Editar</button>
-                <button onclick="deleteSlide(${idx})" class="btn-dash" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:rgba(255,68,68,0.1); border:1px solid #ff4444; color:#ff4444; cursor:pointer">X</button>
-            </div>
-        `;
-        list.appendChild(item);
-      });
+      list.innerHTML = allSlides.map((s, i) => `
+        <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; background:var(--gris-oscuro);">
+           <div style="display:flex; gap:1rem; align-items:center;">
+             <span style="font-size:2rem;">${s.icon}</span>
+             <div>
+               <div style="font-weight:bold; color:var(--blanco);">${s.t1} ${s.t2}</div>
+               <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
+             </div>
+           </div>
+           <div style="display:flex; gap:0.5rem;">
+              <button class="btn-dash sm" onclick="editSlide(${i})">✎</button>
+              <button class="btn-dash sm danger" onclick="deleteSlide(${i})">🗑</button>
+           </div>
+        </div>
+      `).join('');
     }
+
+    function renderNosotros() {
+      const container = document.getElementById('nosotrosContent');
+      if (!container) return;
+      container.innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4rem; align-items:center;">
+           <div class="nos-wrap reveal">
+              <div class="nos-img-box">🏠</div>
+              <div class="nos-tag">${nosotrosData.tag || 'Desde el 2000'}</div>
+              <div class="nos-border"></div>
+           </div>
+           <div class="reveal">
+              <div class="section-label">Quiénes somos</div>
+              <h2 class="section-title" style="margin-bottom:1.4rem">${nosotrosData.title || ''}</h2>
+              <p class="nos-p">${nosotrosData.p1 || ''}</p>
+              <p class="nos-p">${nosotrosData.p2 || ''}</p>
+              <div class="valores">
+                ${(nosotrosData.valores || []).map(v => `<div class="valor">✅ ${v}</div>`).join('')}
+              </div>
+           </div>
+        </div>
+      `;
+      initReveal();
+    }
+
+    function renderSucursales() {
+      const tabs = document.getElementById('sucursalesTabs');
+      const panels = document.getElementById('sucursalesPanels');
+      if (!tabs || !panels) return;
+
+      tabs.innerHTML = allSucursales.map((s, i) => `
+        <div class="suc-tab ${i === 0 ? 'on' : ''}" onclick="switchSuc(${s.id})">
+          <div class="tab-dot"></div> 🏠 ${s.tabName}
+        </div>
+      `).join('');
+
+      panels.innerHTML = allSucursales.map((s, i) => `
+        <div class="suc-panel ${i === 0 ? 'on' : ''} reveal" id="suc${s.id}">
+          <div class="suc-info-block">
+            <div class="suc-subtitulo">${s.title}</div>
+            <div class="i-item"><div class="i-ico">📍</div><div><div class="i-label">Dirección</div><div class="i-val">${s.address}</div></div></div>
+            <div class="i-item"><div class="i-ico">📞</div><div><div class="i-label">Teléfono</div><div class="i-val"><a href="tel:${s.phoneVal}">${s.phone}</a></div></div></div>
+            <div class="i-item"><div class="i-ico">💬</div><div><div class="i-label">WhatsApp</div><div class="i-val"><a href="https://wa.me/${s.whatsappVal}" target="_blank">${s.whatsapp}</a></div></div></div>
+            <div class="i-item"><div class="i-ico">⏰</div><div><div class="i-label">Horario</div><div class="i-val">${s.schedule.replace(/\n/g, '<br>')}</div></div></div>
+            <a class="wa-link" href="https://wa.me/${s.whatsappVal}" target="_blank">💬 Escribir por WhatsApp</a>
+          </div>
+          <div class="suc-right">
+            <div class="mapa-box">
+              <div class="mapa-grid-bg"></div>
+              <div class="mapa-pin"><div class="mapa-pin-ico">📍</div><div class="mapa-pin-lbl">${s.mapLabel}</div></div>
+            </div>
+            <div>
+              <div class="form-grid">
+                <div class="f-group"><label>Nombre</label><input type="text" placeholder="Tu nombre completo"></div>
+                <div class="f-group"><label>Teléfono</label><input type="tel" placeholder="+506 0000-0000"></div>
+                <div class="f-group"><label>Correo electrónico</label><input type="email" placeholder="correo@ejemplo.com"></div>
+                <div class="f-group full"><label>Mensaje</label><textarea placeholder="Escribinos a la sucursal ${s.tabName}..."></textarea></div>
+              </div>
+              <button class="f-submit" onclick="submitForm(this)">Enviar a ${s.tabName} 🚀</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      initReveal();
+    }
+
+    function renderDashSucursales() {
+      const list = document.getElementById('dashSucursalesList');
+      const editList = document.getElementById('sucursalesEditList');
+      if (list) {
+         list.innerHTML = allSucursales.map(s => `<div style="font-size:0.75rem; color:var(--blanco); margin-bottom:0.3rem;">📍 <strong>${s.tabName}</strong></div>`).join('');
+      }
+      if (editList) {
+          editList.innerHTML = allSucursales.map(s => `
+            <div onclick="editSucursal(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
+                <span style="font-size:1.5rem;">🏠</span>
+                <div>
+                    <div style="font-weight:bold; color:var(--amarillo);">${s.tabName}</div>
+                    <div style="font-size:0.8rem; color:var(--gris-texto);">${s.title}</div>
+                </div>
+            </div>
+          `).join('');
+      }
+    }
+
+    // Modal Slide Editor
+    window.openSlideEditor = (idx = -1) => {
+        const isEdit = idx >= 0;
+        document.getElementById('slideEditTitle').textContent = isEdit ? 'Editar Slide' : 'Agregar Nuevo Slide';
+        document.getElementById('editSlideIdx').value = idx;
+        if (isEdit) {
+            const s = allSlides[idx];
+            document.getElementById('sT1').value = s.t1;
+            document.getElementById('sT2').value = s.t2;
+            document.getElementById('sT3').value = s.t3;
+            document.getElementById('sDesc').value = s.desc;
+            document.getElementById('sIcon').value = s.icon;
+            document.getElementById('sImage').value = s.image;
+        } else {
+            document.getElementById('sT1').value = '';
+            document.getElementById('sT2').value = '';
+            document.getElementById('sT3').value = '';
+            document.getElementById('sDesc').value = '';
+            document.getElementById('sIcon').value = '✨';
+            document.getElementById('sImage').value = '';
+        }
+        document.getElementById('slideEditor').classList.add('show');
+    };
+    window.closeSlideEditor = () => document.getElementById('slideEditor').classList.remove('show');
+    window.saveSlide = () => {
+        const idx = parseInt(document.getElementById('editSlideIdx').value);
+        const s = {
+            t1: document.getElementById('sT1').value,
+            t2: document.getElementById('sT2').value,
+            t3: document.getElementById('sT3').value,
+            desc: document.getElementById('sDesc').value,
+            icon: document.getElementById('sIcon').value,
+            image: document.getElementById('sImage').value
+        };
+        if (idx >= 0) allSlides[idx] = s;
+        else allSlides.push(s);
+        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
+        renderHeroSlides(); renderDashSlides(); closeSlideEditor(); initSlider();
+    };
+    window.deleteSlide = (idx) => {
+        if (!confirm('¿Seguro?')) return;
+        allSlides.splice(idx,1);
+        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
+        renderHeroSlides(); renderDashSlides(); initSlider();
+    };
+    window.editSlide = (idx) => window.openSlideEditor(idx);
 
     function initNav() {
       const nav = document.querySelector('nav');
@@ -3491,26 +3854,8 @@
       });
     }
 
-    function initApp() {
-      loadSlides();
-
-      const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2UMFgfmCn6_Xi4U9h8yo68dX7qZ5c_Rjks9FSmnCNOQhIQUHXVYVaqO0EaZnNja7HCMEhmBm_SGnH/pub?gid=0&single=true&output=csv';
-      syncCatalog(GOOGLE_SHEET_URL, true); // true = silent
-
-      const dot = document.getElementById('sheetsDot');
-      const txt = document.getElementById('sheetsStatusTxt');
-      if (dot) dot.classList.remove('loading');
-      if (txt) txt.textContent = 'Catálogo en línea';
-
-      document.body.classList.add('js-loaded');
-
-      renderHeroSlides();
-      renderFiltros(allProductos);
-      renderProductos();
-      initSlider();
-      initNav();
-      initReveal();
-    }
+    // CRUD Antiguo removido 
+    
 
     /*  Slider  */
     function initSlider() {
@@ -3683,6 +4028,9 @@
       function finishSync(csv) {
         if (!csv || csv.length < 10) return;
         if (parsearCSV(csv)) {
+          // Guardar en el nuevo almacén local maestro
+          localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
+          
           document.getElementById('syncDate').textContent = new Date().toLocaleString();
           document.getElementById('syncCount').textContent = allProductos.length;
           if (document.getElementById('dashSheetUrl')) document.getElementById('dashSheetUrl').value = url;
@@ -3698,234 +4046,156 @@
     window.saveCatalogConfig = () => syncCatalog();
     window.connectSheet = () => syncCatalog();
 
-    // Asegurar funciones de slider en scope global
-    window.openSlideEditor = openSlideEditor;
-    window.closeSlideEditor = closeSlideEditor;
-    window.saveSlide = saveSlide;
-    window.editSlide = editSlide;
-    window.deleteSlide = deleteSlide;
+    // Exportar funciones a window para que sean accesibles desde onclick
+    window.openSlideEditor = function(id = -1) {
+        const isEdit = id >= 0;
+        document.getElementById('slideEditTitle').textContent = isEdit ? 'Editar Slide' : 'Nuevo Slide';
+        document.getElementById('editSlideId').value = id;
+        if (isEdit) {
+            const s = allSlides[id];
+            document.getElementById('sT1').value = s.t1;
+            document.getElementById('sT2').value = s.t2;
+            document.getElementById('sT3').value = s.t3;
+            document.getElementById('sDesc').value = s.desc;
+            document.getElementById('sIcon').value = s.icon;
+            document.getElementById('sImage').value = s.image;
+        } else {
+            document.getElementById('sT1').value = '';
+            document.getElementById('sT2').value = '';
+            document.getElementById('sT3').value = '';
+            document.getElementById('sDesc').value = '';
+            document.getElementById('sIcon').value = '✨';
+            document.getElementById('sImage').value = '';
+        }
+        document.getElementById('slideEditor').classList.add('show');
+    };
+    window.closeSlideEditor = function() {
+        document.getElementById('slideEditor').classList.remove('show');
+    };
+    window.editSlide = function(id) { window.openSlideEditor(id); };
+    window.deleteSlide = function(id) {
+        if (!confirm('¿Seguro?')) return;
+        allSlides.splice(id, 1);
+        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
+        renderHeroSlides();
+        renderDashSlides();
+    };
+    window.saveSlide = function() {
+        const id = parseInt(document.getElementById('editSlideId').value);
+        const slide = {
+            t1: document.getElementById('sT1').value,
+            t2: document.getElementById('sT2').value,
+            t3: document.getElementById('sT3').value,
+            desc: document.getElementById('sDesc').value,
+            icon: document.getElementById('sIcon').value,
+            image: document.getElementById('sImage').value
+        };
+        if (id >= 0) allSlides[id] = slide; else allSlides.push(slide);
+        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
+        renderHeroSlides();
+        renderDashSlides();
+        window.closeSlideEditor();
+    };
 
-    function openSlideEditor(idx = -1) {
-      const isEdit = idx >= 0;
-      document.getElementById('slideEditTitle').textContent = isEdit ? 'Editar Slide' : 'Agregar Nuevo Slide';
-      document.getElementById('editSlideIdx').value = idx;
+    // --- PRODUCT MANAGEMENT ---
+    function renderDashProductos() {
+      const tbody = document.getElementById('dashProductosTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = allProductos.map(p => `
+        <tr>
+          <td><span style="font-size:1.5rem;">${p.emoji || '📦'}</span></td>
+          <td style="font-weight:bold; color:var(--blanco);">${p.nombre}</td>
+          <td style="color:var(--gris-texto); font-size:0.85rem;">${p.categoria}</td>
+          <td style="color:var(--amarillo); font-weight:bold;">${p.precio}</td>
+          <td>
+            <span class="badge ${p.estado || 'activo'}">${p.estado || 'Activo'}</span>
+          </td>
+          <td>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn-dash sm" onclick="openProductoEditor(${p.id})">✎</button>
+              <button class="btn-dash sm danger" onclick="deleteProducto(${p.id})">🗑</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      // Update counters
+      const total = document.getElementById('totalProdCount');
+      const offers = document.getElementById('offerProdCount');
+      if (total) total.innerText = allProductos.length;
+      if (offers) offers.innerText = allProductos.filter(p => p.estado === 'oferta').length;
+    }
+
+    function openProductoEditor(id = -1) {
+      const isEdit = id >= 0;
+      document.getElementById('prodEditTitle').textContent = isEdit ? 'Editar Artículo' : 'Nuevo Artículo';
+      document.getElementById('editProdId').value = id;
 
       if (isEdit) {
-        const s = allSlides[idx];
-        document.getElementById('sT1').value = s.t1;
-        document.getElementById('sT2').value = s.t2;
-        document.getElementById('sT3').value = s.t3;
-        document.getElementById('sDesc').value = s.desc;
-        document.getElementById('sIcon').value = s.icon;
-        document.getElementById('sImage').value = s.image || '';
+        const p = allProductos.find(x => x.id == id);
+        if (!p) return;
+        document.getElementById('pNombre').value = p.nombre;
+        document.getElementById('pCat').value = p.categoria;
+        document.getElementById('pPrecio').value = p.precio.replace(SYMBOL_COLON, '');
+        document.getElementById('pEmoji').value = p.emoji || '📦';
+        document.getElementById('pEstado').value = p.estado || 'activo';
+        document.getElementById('pDesc').value = p.descripcion || '';
+        document.getElementById('pImages').value = (p.imagenes || []).join('\n');
       } else {
-        document.getElementById('sT1').value = '';
-        document.getElementById('sT2').value = '';
-        document.getElementById('sT3').value = '';
-        document.getElementById('sDesc').value = '';
-        document.getElementById('sIcon').value = '✨';
-        document.getElementById('sImage').value = '';
+        document.getElementById('pNombre').value = '';
+        document.getElementById('pCat').value = 'General';
+        document.getElementById('pPrecio').value = '';
+        document.getElementById('pEmoji').value = '📦';
+        document.getElementById('pEstado').value = 'activo';
+        document.getElementById('pDesc').value = '';
+        document.getElementById('pImages').value = '';
       }
-      document.getElementById('slideEditor').classList.add('show');
+      document.getElementById('productoEditor').classList.add('show');
     }
 
-    function closeSlideEditor() {
-      document.getElementById('slideEditor').classList.remove('show');
+    function closeProductoEditor() {
+      document.getElementById('productoEditor').classList.remove('show');
     }
 
-    function saveSlide() {
-      const idx = parseInt(document.getElementById('editSlideIdx').value);
-      const s = {
-        t1: document.getElementById('sT1').value || 'Título',
-        t2: document.getElementById('sT2').value || '',
-        t3: document.getElementById('sT3').value || '',
-        desc: document.getElementById('sDesc').value || '',
-        icon: document.getElementById('sIcon').value || '✨',
-        image: document.getElementById('sImage').value || ''
+    function saveProducto() {
+      const id = parseInt(document.getElementById('editProdId').value);
+      const isEdit = id >= 0;
+      const newProd = {
+        id: isEdit ? id : Date.now(),
+        nombre: document.getElementById('pNombre').value.trim(),
+        categoria: document.getElementById('pCat').value.trim(),
+        precio: SYMBOL_COLON + document.getElementById('pPrecio').value.trim(),
+        emoji: document.getElementById('pEmoji').value.trim(),
+        estado: document.getElementById('pEstado').value,
+        descripcion: document.getElementById('pDesc').value.trim(),
+        imagenes: document.getElementById('pImages').value.split('\n').filter(url => url.trim() !== '')
       };
+      if (isEdit) {
+        const idx = allProductos.findIndex(x => x.id === id);
+        if (idx !== -1) allProductos[idx] = newProd;
+      } else allProductos.push(newProd);
 
-      if (idx >= 0) {
-        allSlides[idx] = s;
-      } else {
-        allSlides.push(s);
-      }
-
-      localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
-      alert('Slide guardado exitosamente');
-      closeSlideEditor();
-      renderHeroSlides();
-      renderDashSlides();
-      initSlider(); // Re-iniciar para capturar nuevos elementos
+      localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
+      renderDashProductos();
+      renderProductos();
+      closeProductoEditor();
     }
 
-    function deleteSlide(idx) {
-      if (!confirm('¿Seguro que querés eliminar este slide?')) return;
-      allSlides.splice(idx, 1);
-      localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
-      renderHeroSlides();
-      renderDashSlides();
-      initSlider();
+    function deleteProducto(id) {
+      if (!confirm('¿Seguro?')) return;
+      allProductos = allProductos.filter(x => x.id != id);
+      localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
+      renderDashProductos();
+      renderProductos();
     }
 
-    function editSlide(idx) {
-      openSlideEditor(idx);
-    }
+    window.openProductoEditor = openProductoEditor;
+    window.saveProducto = saveProducto;
+    window.deleteProducto = deleteProducto;
+    window.closeProductoEditor = closeProductoEditor;
 
-    /*  Servicios Management  */
-    function openServiciosManager() {
-      renderDashServicios();
-      document.getElementById('serviciosManager').classList.add('show');
-    }
-    function closeServiciosManager() {
-      document.getElementById('serviciosManager').classList.remove('show');
-    }
-    function editServicio(id) {
-      const s = allServicios.find(x => x.id == id);
-      if (!s) return;
-      document.getElementById('editServicioId').value = id;
-      document.getElementById('serIcon').value = s.icon;
-      document.getElementById('serName').value = s.name;
-      document.getElementById('serDesc').value = s.desc;
-      document.getElementById('servicioEditor').classList.add('show');
-    }
-    function closeServicioEditor() {
-      document.getElementById('servicioEditor').classList.remove('show');
-    }
-    function saveServicio() {
-      const id = document.getElementById('editServicioId').value;
-      const s = allServicios.find(x => x.id == id);
-      if (s) {
-        s.icon = document.getElementById('serIcon').value;
-        s.name = document.getElementById('serName').value;
-        s.desc = document.getElementById('serDesc').value;
-        localStorage.setItem('hr_servicios_v2', JSON.stringify(allServicios));
-        renderServicios();
-        renderDashServicios();
-        closeServicioEditor();
-      }
-    }
-    function renderDashServicios() {
-      const mainList = document.getElementById('dashServiciosList');
-      const editList = document.getElementById('serviciosEditList');
-      if (mainList) {
-        mainList.innerHTML = allServicios.map(s => `
-            <div style="font-size:0.75rem; color:var(--blanco); margin-bottom:0.3rem;">
-                ${s.icon} <strong>${s.name}</strong>
-            </div>
-        `).join('');
-      }
-      if (editList) {
-        editList.innerHTML = allServicios.map(s => `
-            <div onclick="editServicio(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
-                <span style="font-size:1.5rem;">${s.icon}</span>
-                <div>
-                    <div style="font-weight:bold; color:var(--amarillo);">${s.name}</div>
-                    <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
-                </div>
-            </div>
-        `).join('');
-      }
-    }
-
-    /*  Nosotros Management  */
-    function openNosotrosEditor() {
-      document.getElementById('nosTag').value = nosotrosData.tag;
-      document.getElementById('nosTitle').value = nosotrosData.title;
-      document.getElementById('nosP1').value = nosotrosData.p1;
-      document.getElementById('nosP2').value = nosotrosData.p2;
-      document.getElementById('nosValores').value = (nosotrosData.valores || []).join('\n');
-      document.getElementById('nosotrosEditor').classList.add('show');
-    }
-    function closeNosotrosEditor() {
-      document.getElementById('nosotrosEditor').classList.remove('show');
-    }
-    function saveNosotros() {
-      nosotrosData = {
-        tag: document.getElementById('nosTag').value,
-        title: document.getElementById('nosTitle').value,
-        p1: document.getElementById('nosP1').value,
-        p2: document.getElementById('nosP2').value,
-        valores: document.getElementById('nosValores').value.split('\n').filter(l => l.trim() !== '')
-      };
-      localStorage.setItem('hr_nosotros_v2', JSON.stringify(nosotrosData));
-      renderNosotros();
-      closeNosotrosEditor();
-      alert('Información de Nosotros guardada.');
-    }
-
-    /*  Sucursales Management  */
-    function openSucursalesManager() {
-      renderDashSucursales();
-      document.getElementById('sucursalesManager').classList.add('show');
-    }
-    function closeSucursalesManager() {
-      document.getElementById('sucursalesManager').classList.remove('show');
-    }
-    function editSucursal(id) {
-      const s = allSucursales.find(x => x.id == id);
-      if (!s) return;
-      document.getElementById('editSucursalId').value = id;
-      document.getElementById('sucTabName').value = s.tabName;
-      document.getElementById('sucTitle').value = s.title;
-      document.getElementById('sucAddress').value = s.address;
-      document.getElementById('sucMapLabel').value = s.mapLabel;
-      document.getElementById('sucPhone').value = s.phone;
-      document.getElementById('sucWhatsapp').value = s.whatsapp;
-      document.getElementById('sucSchedule').value = s.schedule;
-      document.getElementById('sucursalEditor').classList.add('show');
-    }
-    function closeSucursalEditor() {
-      document.getElementById('sucursalEditor').classList.remove('show');
-    }
-    function saveSucursal() {
-      const id = document.getElementById('editSucursalId').value;
-      const s = allSucursales.find(x => x.id == id);
-      if (s) {
-        s.tabName = document.getElementById('sucTabName').value;
-        s.title = document.getElementById('sucTitle').value;
-        s.address = document.getElementById('sucAddress').value;
-        s.mapLabel = document.getElementById('sucMapLabel').value;
-        s.phone = document.getElementById('sucPhone').value;
-        s.whatsapp = document.getElementById('sucWhatsapp').value;
-        s.schedule = document.getElementById('sucSchedule').value;
-
-        s.phoneVal = '+506' + s.phone.replace(/[^0-9]/g, '');
-        s.whatsappVal = '+506' + s.whatsapp.replace(/[^0-9]/g, '');
-
-        localStorage.setItem('hr_sucursales_v2', JSON.stringify(allSucursales));
-        renderSucursales();
-        renderDashSucursales();
-        closeSucursalEditor();
-      }
-    }
-    function renderDashSucursales() {
-      const mainList = document.getElementById('dashSucursalesList');
-      const editList = document.getElementById('sucursalesEditList');
-      if (mainList) {
-        mainList.innerHTML = allSucursales.map(s => `
-            <div style="font-size:0.75rem; color:var(--blanco); margin-bottom:0.3rem;">
-                📍 <strong>${s.tabName}</strong>
-            </div>
-        `).join('');
-      }
-      if (editList) {
-        editList.innerHTML = allSucursales.map(s => `
-            <div onclick="editSucursal(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
-                <span style="font-size:1.5rem;">🏠</span>
-                <div>
-                    <div style="font-weight:bold; color:var(--amarillo);">${s.tabName}</div>
-                    <div style="font-size:0.8rem; color:var(--gris-texto);">${s.title}</div>
-                </div>
-            </div>
-        `).join('');
-      }
-    }
-
-    window.closeModal = closeModal;
-    window.switchSuc = switchSuc;
-    window.submitForm = submitForm;
-
-    const SYMBOL_COLON = '\u20A1';
+    // --- MOTOR DE DATOS Y UTILIDADES ---
 
 
     function parsearCSV(csv) {
@@ -4119,66 +4389,98 @@
   </div>
 
   <div id="adminDash" class="admin-dash">
-    <div class="dash-header">
-      <div class="dash-title">Panel de Control <span>Administrativo</span></div>
-      <div style="display:flex; gap:1rem; align-items:center;">
-        <span id="adminSessionName" style="color:var(--gris-texto); font-size:0.8rem;">Admin @ HR</span>
-        <button class="dash-close" onclick="closeDash()">Cerrar Panel</button>
+    <div class="dash-sidebar">
+      <div class="dash-sidebar-header">
+        <h3>Panel <span>HR</span></h3>
+        <span>Ferretería</span>
+      </div>
+      <div class="dash-nav">
+        <button class="dash-nav-btn active" onclick="switchDashTab('tab-inventario')">📦 Inventario</button>
+        <button class="dash-nav-btn" onclick="switchDashTab('tab-slider')">🖼️ Carrusel (Hero)</button>
+        <button class="dash-nav-btn" onclick="switchDashTab('tab-servicios')">🛠️ Servicios</button>
+        <button class="dash-nav-btn" onclick="switchDashTab('tab-nosotros')">📄 Nosotros</button>
+        <button class="dash-nav-btn" onclick="switchDashTab('tab-sucursales')">📍 Sucursales</button>
+      </div>
+      <div class="dash-sidebar-footer">
+        <button class="btn-dash" style="width:100%" onclick="closeDash()">Cerrar Panel</button>
       </div>
     </div>
-    <div class="dash-grid">
-      <!-- Columna 1: Catálogo -->
-      <div class="dash-card">
-        <h4>📦 Inventario & Catálogo</h4>
-        <div class="dash-input-group">
-          <label>URL de Google Sheets (CSV)</label>
-          <input type="text" id="dashSheetUrl" class="sheets-input" placeholder="Pegá el link CSV aquíí">
+
+    <div class="dash-main">
+      <div class="dash-content-header">
+        <h2 id="dashCurrentTitle" style="font-family:'Barlow Condensed'; text-transform:uppercase;">📦 Gestión de Inventario</h2>
+        <div style="display:flex; gap:1rem; align-items:center;">
+          <span id="adminSessionName" style="color:var(--gris-texto); font-size:0.8rem;">Admin @ HR</span>
         </div>
-        <button class="sheets-save-btn" onclick="saveCatalogConfig()">Guardar y Sincronizar</button>
-        <p class="sheets-hint" style="margin-top:1rem">
-          Última sincronización: <span id="syncDate">-</span><br>
-          Productos activos: <span id="syncCount">0</span>
-        </p>
       </div>
 
-      <!-- Columna 2: Hero Slider -->
-      <div class="dash-card">
-        <h4>🖼️ Mantenimiento de Slides (Hero)</h4>
-        <div id="dashSlidesList">
-          <!-- Slides rendering here -->
+      <!-- Tab: Inventario -->
+      <div id="tab-inventario" class="dash-page active">
+        <div class="dash-stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Productos</div>
+            <div class="stat-val" id="totalProdCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">En Oferta</div>
+            <div class="stat-val" id="offerProdCount">0</div>
+          </div>
         </div>
-        <button class="btn-dash primary" style="width:100%; padding:0.8rem; margin-top:1rem;"
-          onclick="openSlideEditor()">+ Agregar Nuevo Slide</button>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <h4 style="margin:0">Lista de Artículos</h4>
+          <button class="btn-dash primary" onclick="openProductoEditor()">+ Nuevo Producto</button>
+        </div>
+
+        <div class="dash-table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th width="60">Icono</th>
+                <th>Nombre del Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th width="150">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="dashProductosTableBody">
+              <!-- Se carga por JS -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- Columna 3: Servicios -->
-      <div class="dash-card">
+      <!-- Tab: Slider -->
+      <div id="tab-slider" class="dash-page">
+        <h4>🖼️ Mantenimiento de Slides</h4>
+        <div id="dashSlidesList" style="margin-top:1.5rem;"></div>
+        <button class="btn-dash primary" style="margin-top:1.5rem;" onclick="openSlideEditor()">+ Agregar Slide</button>
+      </div>
+
+      <!-- Tab: Servicios -->
+      <div id="tab-servicios" class="dash-page">
         <h4>🛠️ Servicios & Cuadros</h4>
-        <p class="sheets-hint" style="margin-bottom:1rem;">Modificá los 6 cuadros de servicios principales.</p>
-        <div id="dashServiciosList">
-          <!-- Lista de servicios rendering aquí -->
-        </div>
-        <button class="btn-dash primary" style="width:100%; padding:0.8rem; margin-top:1rem;"
-          onclick="openServiciosManager()">Gestionar Servicios</button>
+        <p class="sheets-hint">Modifica los 6 cuadros de servicios principales.</p>
+        <div id="dashServiciosList" style="margin-top:1.5rem;"></div>
+        <button class="btn-dash primary" style="margin-top:1.5rem;" onclick="openServiciosManager()">Gestionar Servicios</button>
       </div>
 
-      <!-- Columna 4: Quienes Somos -->
-      <div class="dash-card">
+      <!-- Tab: Nosotros -->
+      <div id="tab-nosotros" class="dash-page">
         <h4>📄 Quienes Somos / Nosotros</h4>
-        <p class="sheets-hint" style="margin-bottom:1rem;">Editá el texto e historia de la empresa.</p>
-        <button class="btn-dash primary" style="width:100%; padding:0.8rem;" onclick="openNosotrosEditor()">Editar
-          Información</button>
+        <p class="sheets-hint">Edita el texto e historia de la empresa.</p>
+        <div style="margin-top:2rem; background:var(--gris-oscuro); padding:2rem; border-radius:8px; border:1px solid var(--gris-borde);">
+           <p id="nosSummary" style="color:var(--gris-texto); font-size:0.9rem; margin-bottom:1.5rem;">Cargando información...</p>
+           <button class="btn-dash primary" onclick="openNosotrosEditor()">Editar Información Completa</button>
+        </div>
       </div>
 
-      <!-- Columna 5: Sucursales -->
-      <div class="dash-card">
+      <!-- Tab: Sucursales -->
+      <div id="tab-sucursales" class="dash-page">
         <h4>📍 Gestión de Sucursales</h4>
-        <p class="sheets-hint" style="margin-bottom:1rem;">Direcciones, teléfonos y horarios de tus sedes.</p>
-        <div id="dashSucursalesList">
-          <!-- Sucursales info -->
-        </div>
-        <button class="btn-dash primary" style="width:100%; padding:0.8rem; margin-top:1rem;"
-          onclick="openSucursalesManager()">Gestionar Sucursales</button>
+        <div id="dashSucursalesList" style="margin-top:1.5rem;"></div>
+        <button class="btn-dash primary" style="margin-top:1.5rem;" onclick="openSucursalesManager()">Gestionar Sucursales</button>
       </div>
 
     </div>
@@ -4290,6 +4592,58 @@
         <!-- Lista de sucursales para editar -->
       </div>
       <button class="btn-dash" style="width:100%; margin-top:0.5rem;" onclick="closeSucursalesManager()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Modal: Editar Producto -->
+  <div id="productoEditor" class="login-modal" style="z-index:3000;">
+    <div class="login-box" style="max-width:700px;">
+      <h3 id="prodEditTitle">Nuevo Producto</h3>
+      <input type="hidden" id="editProdId" value="">
+      
+      <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+        <div class="dash-input-group">
+          <label>Nombre del Producto</label>
+          <input type="text" id="pNombre" placeholder="Ej: Martillo Pro">
+        </div>
+        <div class="dash-input-group">
+          <label>Categoría</label>
+          <input type="text" id="pCat" placeholder="Ej: Herramientas">
+        </div>
+        <div class="dash-input-group">
+          <label>Precio (Incluir símbolo)</label>
+          <input type="text" id="pPrecio" placeholder="Ej: ₡12.500">
+        </div>
+        <div class="dash-input-group">
+          <label>Estado</label>
+          <select id="pEstado">
+            <option value="activo">Activo</option>
+            <option value="oferta">Oferta</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dash-input-group">
+        <label>Descripción</label>
+        <textarea id="pDesc" rows="3" placeholder="Detalles del producto..."></textarea>
+      </div>
+
+      <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="dash-input-group">
+          <label>Icono / Emoji (si no hay imagen)</label>
+          <input type="text" id="pEmoji" placeholder="Ej: 🛠️">
+        </div>
+        <div class="dash-input-group">
+          <label>URLs de Imágenes (Una por línea)</label>
+          <textarea id="pImages" rows="2" placeholder="https://..."></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+        <button class="f-submit" style="flex:2" onclick="saveProducto()">Guardar Producto</button>
+        <button class="btn-dash" style="flex:1" onclick="closeProductoEditor()">Cancelar</button>
+      </div>
     </div>
   </div>
 
