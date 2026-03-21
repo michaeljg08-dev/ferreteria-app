@@ -1,0 +1,32 @@
+name: Despliegue a HostGator
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Obtener el código
+        uses: actions/checkout@v3
+
+      - name: 🚀 Subir archivos vía FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          # IMPORTANTE: Cambia 'v2' por la carpeta de HostGator que desees
+          server-dir: public_html/v2/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            *.ps1
+            *.py
+            *.js
+            *.backup
+            task.md
+            walkthrough.md
+            implementation_plan*.md
