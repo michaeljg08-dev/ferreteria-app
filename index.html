@@ -3138,6 +3138,9 @@
 
 
     const SYMBOL_COLON = '\u20A1';
+    const API_URL = 'api.php'; 
+    const API_PASS = '12345'; 
+    
     let allProductos = [];
     let allSlides = [];
     let allServicios = [];
@@ -3482,19 +3485,30 @@
       }
     }
 
-    function initApp() {
-      loadSlides();
-      loadServicios();
-      loadNosotros();
-      loadSucursales();
-      
-      // Intentar cargar productos locales primero
-      const savedProds = localStorage.getItem('hr_productos_local_v2');
-      if (savedProds) {
-          allProductos = JSON.parse(savedProds);
-      } else {
-          allProductos = [...DEMO_PRODUCTOS];
+    async function initApp() {
+      // 1. Intentar cargar desde Hostinger (Servidor)
+      try {
+        const resp = await fetch(`${API_URL}?action=get`);
+        if (resp.ok) {
+            const data = await resp.json();
+            if (data.productos) allProductos = data.productos;
+            if (data.slides) allSlides = data.slides;
+            if (data.servicios) allServicios = data.servicios;
+            if (data.sucursales) allSucursales = data.sucursales;
+            if (data.nosotros) nosotrosData = data.nosotros;
+            console.log("Datos cargados desde el servidor");
+        }
+      } catch (e) { console.warn("Error cargando desde servidor, usando local...", e); }
+
+      // 2. Fallback a LocalStorage si no hubo servidor o falló
+      if (allProductos.length === 0) {
+        const pSaved = localStorage.getItem('hr_productos_local_v2');
+        allProductos = pSaved ? JSON.parse(pSaved) : [...DEMO_PRODUCTOS];
       }
+      if (allSlides.length === 0) loadSlides();
+      if (allServicios.length === 0) loadServicios();
+      if (nosotrosData.title === undefined) loadNosotros();
+      if (allSucursales.length === 0) loadSucursales();
 
       renderHeroSlides();
       renderProductos();
@@ -3547,6 +3561,7 @@
           renderServicios();
           renderDashServicios();
           closeServicioEditor();
+          syncConServidor();
         }
       };
 
@@ -3576,6 +3591,7 @@
            document.getElementById('nosSummary').innerText = nosotrosData.p1.substring(0, 150) + '...';
         }
         closeNosotrosEditor();
+        syncConServidor();
       };
 
       // Exportar funciones de gestión de Sucursales
@@ -3620,6 +3636,7 @@
           renderSucursales();
           renderDashSucursales();
           closeSucursalEditor();
+          syncConServidor();
         }
       };
 
@@ -3668,6 +3685,58 @@
         btn.closest('.suc-panel').querySelectorAll('input, select, textarea').forEach(i => i.value = '');
       };
     }
+
+    // --- FUNCIONES DE SINCRONIZACIÓN Y SUBIDA ---
+    async function syncConServidor() {
+        const payload = {
+            productos: allProductos,
+            slides: allSlides,
+            servicios: allServicios,
+            sucursales: allSucursales,
+            nosotros: nosotrosData
+        };
+        try {
+            const r = await fetch(`${API_URL}?action=save&pass=${API_PASS}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const res = await r.json();
+            console.log("Sincronización:", res.message);
+        } catch(e) { console.error("Error sincronizando:", e); }
+    }
+
+    window.subirImagen = async (input, targetId) => {
+        if (!input.files || !input.files[0]) return;
+        const btn = input.previousElementSibling;
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Subiendo...';
+        btn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('file', input.files[0]);
+
+        try {
+            const r = await fetch(`${API_URL}?action=upload&pass=${API_PASS}`, {
+                method: 'POST',
+                body: formData
+            });
+            const res = await r.json();
+            if (res.status === 'ok') {
+                document.getElementById(targetId).value = res.url;
+                btn.textContent = '✅ ¡Subida!';
+                setTimeout(() => { btn.textContent = 'Subir Foto 📷'; btn.disabled = false; }, 2000);
+            } else {
+                alert("Error: " + res.message);
+                btn.textContent = '❌ Error';
+                btn.disabled = false;
+            }
+        } catch(e) { 
+            console.error(e); 
+            btn.textContent = '❌ Error';
+            btn.disabled = false;
+        }
+    };
 
     function renderHeroSlides() {
       const slider = document.querySelector('.hero-slider');
@@ -3831,6 +3900,7 @@
         else allSlides.push(s);
         localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
         renderHeroSlides(); renderDashSlides(); closeSlideEditor(); initSlider();
+        syncConServidor();
     };
     window.deleteSlide = (idx) => {
         if (!confirm('¿Seguro?')) return;
@@ -4186,6 +4256,7 @@
       renderDashProductos();
       renderProductos();
       closeProductoEditor();
+      syncConServidor();
     }
 
     function deleteProducto(id) {
@@ -4514,7 +4585,11 @@
       </div>
       <div class="dash-input-group">
         <label>Imagen Banner (Nombre de archivo)</label>
-        <input type="text" id="sImage" placeholder="Ej: banner_materiales.png">
+        <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="sImage" placeholder="Ej: banner_materiales.png" style="flex:1">
+            <button class="btn-dash sm" onclick="this.nextElementSibling.click()">Subir Foto 📷</button>
+            <input type="file" style="display:none" onchange="subirImagen(this, 'sImage')">
+        </div>
       </div>
       <button class="f-submit" onclick="saveSlide()">Guardar Cambios</button>
       <button class="btn-dash" style="width:100%; margin-top:0.5rem;" onclick="closeSlideEditor()">Cancelar</button>
@@ -4629,21 +4704,37 @@
       <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
         <div class="dash-input-group">
           <label>URL Imagen 1 (Principal)</label>
-          <input type="text" id="pImg1" placeholder="https://...">
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="pImg1" placeholder="https://" style="flex:1">
+            <button class="btn-dash sm" onclick="this.nextElementSibling.click()">📷</button>
+            <input type="file" style="display:none" onchange="subirImagen(this, 'pImg1')">
+          </div>
         </div>
         <div class="dash-input-group">
           <label>URL Imagen 2</label>
-          <input type="text" id="pImg2" placeholder="https://...">
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="pImg2" placeholder="https://" style="flex:1">
+            <button class="btn-dash sm" onclick="this.nextElementSibling.click()">📷</button>
+            <input type="file" style="display:none" onchange="subirImagen(this, 'pImg2')">
+          </div>
         </div>
       </div>
       <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
         <div class="dash-input-group">
           <label>URL Imagen 3</label>
-          <input type="text" id="pImg3" placeholder="https://...">
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="pImg3" placeholder="https://" style="flex:1">
+            <button class="btn-dash sm" onclick="this.nextElementSibling.click()">📷</button>
+            <input type="file" style="display:none" onchange="subirImagen(this, 'pImg3')">
+          </div>
         </div>
         <div class="dash-input-group">
           <label>URL Imagen 4</label>
-          <input type="text" id="pImg4" placeholder="https://...">
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="pImg4" placeholder="https://" style="flex:1">
+            <button class="btn-dash sm" onclick="this.nextElementSibling.click()">📷</button>
+            <input type="file" style="display:none" onchange="subirImagen(this, 'pImg4')">
+          </div>
         </div>
       </div>
 
