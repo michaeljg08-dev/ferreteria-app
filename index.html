@@ -2839,14 +2839,6 @@
             <a href="#nosotros" class="btn-s">Nosotros</a>
           </div>
         </div>
-        <div class="slide-visual">
-          <div class="vis-box">
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-icon">👁️</div>
-          </div>
-        </div>
       </div>
       <div class="slide slide-2 active" style="background-image: url('banner_herramientas.png');">
         <div class="slide-content">
@@ -2863,14 +2855,6 @@
             <a href="#nosotros" class="btn-s">Nosotros</a>
           </div>
         </div>
-        <div class="slide-visual">
-          <div class="vis-box">
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-icon">⚡</div>
-          </div>
-        </div>
       </div>
       <div class="slide slide-3" style="background-image: url('banner_acabados.png');">
         <div class="slide-content">
@@ -2885,14 +2869,6 @@
           <div class="slide-btns">
             <a href="#catalogo" class="btn-p">Ver Productos</a>
             <a href="#nosotros" class="btn-s">Nosotros</a>
-          </div>
-        </div>
-        <div class="slide-visual">
-          <div class="vis-box">
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-ring"></div>
-            <div class="vis-icon">🎨</div>
           </div>
         </div>
       </div>
@@ -3659,6 +3635,7 @@
         if (u === 'admin' && p === '12345') {
           window.toggleLogin(false);
           document.getElementById('adminDash').classList.add('show');
+          renderDashProductos();
           renderDashSlides();
           renderDashServicios();
           renderDashSucursales();
@@ -4027,6 +4004,7 @@
       if (user === 'admin' && pass === '12345') {
         toggleLogin(false);
         document.getElementById('adminDash').classList.add('show');
+        renderDashProductos();
         renderDashSlides();
         renderDashServicios();
         renderDashSucursales();
@@ -4265,6 +4243,7 @@
       localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
       renderDashProductos();
       renderProductos();
+      syncConServidor();
     }
 
     window.openProductoEditor = openProductoEditor;
@@ -4699,6 +4678,11 @@
             <option value="inactivo">Inactivo</option>
           </select>
         </div>
+      </div>
+
+      <div class="dash-input-group" style="margin-top:0.5rem;">
+        <label>Descripción del Producto</label>
+        <textarea id="pDesc" rows="3" placeholder="Descripción detallada del producto..."></textarea>
       </div>
 
       <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
