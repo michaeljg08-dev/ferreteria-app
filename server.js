@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const port = 3001;
-const directory = 'c:/Users/Usuario/.gemini/antigravity/scratch/ferreteria-app';
+const directory = __dirname;
 
 const server = http.createServer((req, res) => {
   let filePath = path.join(directory, req.url === '/' ? 'index.html' : req.url);

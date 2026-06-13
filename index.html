@@ -3583,6 +3583,16 @@
     window.allSucursales = allSucursales;
     window.nosotrosData = nosotrosData;
     let filtroActivo = 'todos';
+    let cart = [];
+    let catalogModalPaginaActual = 1;
+    const CATALOG_POR_PAGINA = 12;
+
+    try {
+      const savedCart = localStorage.getItem('hr_cart_v2');
+      if (savedCart) cart = JSON.parse(savedCart);
+    } catch (e) {
+      console.error("Error al cargar el carrito:", e);
+    }
     let paginaActual = 1;
     const POR_PAGINA = 8;
 
@@ -3604,8 +3614,12 @@
     }
 
     function filtrar(btn, cat) {
+      if (cat && cat !== 'todos') {
+        abrirCatalogoCompleto(cat);
+        return;
+      }
       if (btn) { document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
-      filtroActivo = cat || 'todos';
+      filtroActivo = 'todos';
       paginaActual = 1;
       renderProductos();
     }
@@ -3734,14 +3748,20 @@
     function renderProductos() {
       const grid = document.getElementById('productosGrid');
       const pagDiv = document.getElementById('paginacion');
+      if (!grid) return;
 
-      const filtered = filtroActivo === 'todos' ? allProductos : allProductos.filter(p => p.categoria === filtroActivo);
-      const totalPags = Math.ceil(filtered.length / POR_PAGINA);
-      const slice = filtered.slice((paginaActual - 1) * POR_PAGINA, paginaActual * POR_PAGINA);
+      const homeProducts = allProductos.filter(p => p.estado !== 'inactivo');
+      homeProducts.sort((a, b) => {
+        if (a.estado === 'oferta' && b.estado !== 'oferta') return -1;
+        if (a.estado !== 'oferta' && b.estado === 'oferta') return 1;
+        return 0;
+      });
+
+      const slice = homeProducts.slice(0, 6);
 
       if (slice.length === 0) {
         grid.innerHTML = `<div class="cat-empty"><div class="cat-empty-icon">📦</div><div class="cat-empty-title">Sin productos</div><div class="cat-empty-sub">No hay productos en esta categoría aún.</div></div>`;
-        pagDiv.innerHTML = '';
+        if (pagDiv) pagDiv.innerHTML = '';
         return;
       }
 
@@ -3778,16 +3798,8 @@
     `;
       }).join('');
 
-      if (totalPags <= 1) { pagDiv.innerHTML = ''; return; }
-      let pags = '';
-      if (paginaActual > 1) pags += `<button class="pag-btn" onclick="irPagina(${paginaActual - 1})">◀</button>`;
-      for (let i = 1; i <= totalPags; i++) {
-        pags += `<button class="pag-btn ${i === paginaActual ? 'active' : ''}" onclick="irPagina(${i})">${i}</button>`;
-      }
-      if (paginaActual < totalPags) pags += `<button class="pag-btn" onclick="irPagina(${paginaActual + 1})">❯</button>`;
-      pagDiv.innerHTML = pags;
+      if (pagDiv) pagDiv.innerHTML = '';
 
-      // Asegurar visibilidad
       const catHeader = document.querySelector('#catalogo .cat-header');
       if (catHeader) catHeader.classList.add('visible');
       const filtBar = document.getElementById('filtrosBar');
@@ -3944,6 +3956,7 @@
       renderServicios();
       renderNosotros();
       renderSucursales();
+      updateCartUI();
 
       // Exportar funciones de gestión de servicios
       window.openServiciosManager = function() {
@@ -4774,6 +4787,378 @@
       renderProductos();
       return true;
     }
+
+    // --- FUNCIONES DEL CATÁLOGO COMPLETO Y CARRITO ---
+    window.abrirCatalogoCompleto = function (categoria = 'todos') {
+      const modal = document.getElementById('catalogModal');
+      if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      const catSelect = document.getElementById('catModalCategory');
+      if (catSelect) {
+        catSelect.value = categoria;
+      }
+      
+      const searchInput = document.getElementById('catModalSearch');
+      if (searchInput) searchInput.value = '';
+      
+      const statusSelect = document.getElementById('catModalStatus');
+      if (statusSelect) statusSelect.value = 'todos';
+      
+      const sortSelect = document.getElementById('catModalSort');
+      if (sortSelect) sortSelect.value = 'default';
+      
+      catalogModalPaginaActual = 1;
+      renderCatalogoModal();
+    };
+
+    window.cerrarCatalogoCompleto = function () {
+      const modal = document.getElementById('catalogModal');
+      if (modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    };
+
+    window.filtrarCatalogoModal = function () {
+      catalogModalPaginaActual = 1;
+      renderCatalogoModal();
+    };
+
+    window.renderCatalogoModal = function () {
+      const grid = document.getElementById('catModalGrid');
+      const pagDiv = document.getElementById('catModalPaginacion');
+      if (!grid) return;
+
+      const searchValue = document.getElementById('catModalSearch').value.toLowerCase().trim();
+      const catValue = document.getElementById('catModalCategory').value;
+      const statusValue = document.getElementById('catModalStatus').value;
+      const sortValue = document.getElementById('catModalSort').value;
+
+      let filtered = allProductos.filter(p => {
+        if (p.estado === 'inactivo') return false;
+
+        const matchesSearch = searchValue === '' || 
+          p.nombre.toLowerCase().includes(searchValue) || 
+          (p.descripcion && p.descripcion.toLowerCase().includes(searchValue)) ||
+          p.categoria.toLowerCase().includes(searchValue);
+          
+        const matchesCategory = catValue === 'todos' || p.categoria === catValue;
+        const matchesStatus = statusValue === 'todos' || p.estado === statusValue;
+
+        return matchesSearch && matchesCategory && matchesStatus;
+      });
+
+      if (sortValue === 'price-asc' || sortValue === 'price-desc') {
+        filtered.sort((a, b) => {
+          const parsePrice = str => {
+            if (!str) return 0;
+            const clean = str.replace(/[^\d]/g, '');
+            return parseInt(clean) || 0;
+          };
+          const priceA = parsePrice(a.precio);
+          const priceB = parsePrice(b.precio);
+          return sortValue === 'price-asc' ? priceA - priceB : priceB - priceA;
+        });
+      }
+
+      const totalPags = Math.ceil(filtered.length / CATALOG_POR_PAGINA);
+      const slice = filtered.slice((catalogModalPaginaActual - 1) * CATALOG_POR_PAGINA, catalogModalPaginaActual * CATALOG_POR_PAGINA);
+
+      if (slice.length === 0) {
+        grid.innerHTML = `<div class="cat-empty" style="grid-column: 1/-1;"><div class="cat-empty-icon">🔍</div><div class="cat-empty-title">Sin resultados</div><div class="cat-empty-sub">Prueba con otros filtros o términos de búsqueda.</div></div>`;
+        if (pagDiv) pagDiv.innerHTML = '';
+        return;
+      }
+
+      grid.innerHTML = slice.map(p => {
+        const hasImgs = p.imagenes && p.imagenes.length > 0;
+        const mainImg = hasImgs ? p.imagenes[0] : '';
+        const imgHtml = hasImgs ? `
+          <img src="${mainImg}" alt="${p.nombre}" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/FFD000?text=${encodeURIComponent(p.nombre)}';">
+        ` : `<div class="emoji-placeholder" style="font-size:3rem; display:flex; align-items:center; justify-content:center; height:100%;">📦</div>`;
+
+        const badgeHtml = p.estado === 'oferta' ? '<div class="prod-badges"><div class="badge oferta">Oferta</div></div>' : '';
+
+        return `
+          <div class="prod-card">
+            <div class="prod-img" onclick="verProducto(${p.id})">
+              ${imgHtml}
+              ${badgeHtml}
+              <div class="prod-overlay"><button class="over-btn">Ver Detalle</button></div>
+            </div>
+            <div class="prod-info">
+              <div class="prod-cat">${p.categoria}</div>
+              <div class="prod-nom" onclick="verProducto(${p.id})" style="cursor:pointer;">${p.nombre}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
+                <div class="prod-precio" style="margin-top:0;">${p.precio}</div>
+                <button class="over-btn" style="padding:0.4rem 0.8rem; font-size:0.85rem; background:var(--amarillo); color:var(--negro); font-weight:bold; clip-path:none; border-radius:4px;" onclick="agregarAlCarrito(${p.id}, 1, this)">
+                  Agregar 🛒
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (totalPags <= 1) {
+        if (pagDiv) pagDiv.innerHTML = '';
+        return;
+      }
+      let pags = '';
+      if (catalogModalPaginaActual > 1) {
+        pags += `<button class="pag-btn" onclick="irPaginaCatalog(${catalogModalPaginaActual - 1})">◀</button>`;
+      }
+      for (let i = 1; i <= totalPags; i++) {
+        pags += `<button class="pag-btn ${i === catalogModalPaginaActual ? 'active' : ''}" onclick="irPaginaCatalog(${i})">${i}</button>`;
+      }
+      if (catalogModalPaginaActual < totalPags) {
+        pags += `<button class="pag-btn" onclick="irPaginaCatalog(${catalogModalPaginaActual + 1})">▶</button>`;
+      }
+      if (pagDiv) pagDiv.innerHTML = pags;
+    };
+
+    window.irPaginaCatalog = function (n) {
+      catalogModalPaginaActual = n;
+      renderCatalogoModal();
+      const modalBox = document.querySelector('.catalog-box');
+      if (modalBox) modalBox.scrollTop = 0;
+    };
+
+    window.agregarAlCarrito = function (productId, qty = 1, btn = null) {
+      const prod = allProductos.find(p => p.id === productId);
+      if (!prod) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.cantidad += qty;
+      } else {
+        cart.push({
+          id: prod.id,
+          nombre: prod.nombre,
+          precio: prod.precio,
+          categoria: prod.categoria,
+          imagen: (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes[0] : '',
+          cantidad: qty
+        });
+      }
+
+      localStorage.setItem('hr_cart_v2', JSON.stringify(cart));
+      updateCartUI();
+
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "Agregado! ✓";
+        btn.style.background = "#2ecc71";
+        btn.style.color = "#ffffff";
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = "";
+          btn.style.color = "";
+          btn.disabled = false;
+        }, 1000);
+      }
+    };
+
+    window.agregarAlCarritoDesdeDetalle = function () {
+      if (!currentProducto) return;
+      const qtySpan = document.getElementById('detCant');
+      const qty = qtySpan ? parseInt(qtySpan.innerText) || 1 : 1;
+      
+      const btn = document.querySelector('.det-actions .det-cart-btn');
+      agregarAlCarrito(currentProducto.id, qty, btn);
+    };
+
+    window.abrirCarrito = function () {
+      const cartModal = document.getElementById('cartModal');
+      if (cartModal) {
+        cartModal.classList.add('show');
+        renderCartList();
+        populateBranchSelect();
+      }
+    };
+
+    window.cerrarCarrito = function () {
+      const cartModal = document.getElementById('cartModal');
+      if (cartModal) {
+        cartModal.classList.remove('show');
+      }
+    };
+
+    window.cambiarCantidadCarrito = function (productId, delta) {
+      const item = cart.find(x => x.id === productId);
+      if (!item) return;
+
+      item.cantidad += delta;
+      if (item.cantidad <= 0) {
+        eliminarDelCarrito(productId);
+        return;
+      }
+
+      localStorage.setItem('hr_cart_v2', JSON.stringify(cart));
+      updateCartUI();
+      renderCartList();
+    };
+
+    window.eliminarDelCarrito = function (productId) {
+      cart = cart.filter(x => x.id !== productId);
+      localStorage.setItem('hr_cart_v2', JSON.stringify(cart));
+      updateCartUI();
+      renderCartList();
+    };
+
+    window.updateCartUI = function () {
+      const totalCount = cart.reduce((sum, item) => sum + item.cantidad, 0);
+      const floatBtn = document.getElementById('floatingCartBtn');
+      const floatBadge = document.getElementById('floatingCartCount');
+
+      if (floatBtn && floatBadge) {
+        floatBadge.innerText = totalCount;
+        if (totalCount > 0) {
+          floatBtn.style.display = 'flex';
+        } else {
+          floatBtn.style.display = 'none';
+        }
+      }
+    };
+
+    function renderCartList() {
+      const list = document.getElementById('cartItemsList');
+      const totalSpan = document.getElementById('cartTotalVal');
+      const checkoutForm = document.getElementById('cartCheckoutForm');
+      if (!list) return;
+
+      if (cart.length === 0) {
+        list.innerHTML = `
+          <div class="cart-empty-state" style="padding:3rem 1.5rem; text-align:center;">
+            <div class="cart-empty-icon" style="font-size:3rem; margin-bottom:1rem;">🛒</div>
+            <div style="font-weight:bold; color:var(--blanco); margin-bottom:0.5rem;">Tu carrito está vacío</div>
+            <div style="font-size:0.85rem; color:var(--gris-texto);">Agrega productos desde el catálogo para iniciar tu pedido.</div>
+          </div>
+        `;
+        if (totalSpan) totalSpan.innerText = '₡0.00';
+        if (checkoutForm) checkoutForm.style.display = 'none';
+        return;
+      }
+
+      if (checkoutForm) checkoutForm.style.display = 'block';
+
+      let totalSum = 0;
+      
+      list.innerHTML = cart.map(item => {
+        const parsePrice = str => {
+          if (!str) return 0;
+          const clean = str.replace(/[^\d]/g, '');
+          return parseInt(clean) || 0;
+        };
+        const itemPriceVal = parsePrice(item.precio);
+        const subtotal = itemPriceVal * item.cantidad;
+        totalSum += subtotal;
+
+        const formattedSubtotal = '₡' + subtotal.toLocaleString('es-CR');
+
+        const imgHtml = item.imagen ? `
+          <img src="${item.imagen}" alt="${item.nombre}" onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1a1a/FFD000?text=📦';">
+        ` : `<div class="emoji-placeholder" style="font-size:1.5rem; display:flex; align-items:center; justify-content:center; background:var(--gris-medio); width:100%; height:100%;">📦</div>`;
+
+        return `
+          <div class="cart-item-card">
+            <div class="cart-item-img">
+              ${imgHtml}
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.nombre}</div>
+              <div class="cart-item-price">${item.precio}</div>
+            </div>
+            <div class="cart-item-qty-ctrl">
+              <button class="cart-qty-btn" onclick="cambiarCantidadCarrito(${item.id}, -1)">-</button>
+              <span class="cart-item-qty">${item.cantidad}</span>
+              <button class="cart-qty-btn" onclick="cambiarCantidadCarrito(${item.id}, 1)">+</button>
+            </div>
+            <div class="cart-item-delete" onclick="eliminarDelCarrito(${item.id})">
+              🗑️
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (totalSpan) {
+        totalSpan.innerText = '₡' + totalSum.toLocaleString('es-CR');
+      }
+    }
+
+    function populateBranchSelect() {
+      const select = document.getElementById('cartBranchSelect');
+      if (!select) return;
+
+      select.innerHTML = allSucursales.map(suc => `
+        <option value="${suc.id}">${suc.tabName}</option>
+      `).join('');
+    }
+
+    window.completarPedidoWhatsApp = function () {
+      const nameInput = document.getElementById('cartClientName');
+      const name = nameInput ? nameInput.value.trim() : '';
+      
+      if (!name) {
+        alert("Por favor, ingresa tu nombre para procesar el pedido.");
+        if (nameInput) nameInput.focus();
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+
+      const branchSelect = document.getElementById('cartBranchSelect');
+      const branchId = branchSelect ? parseInt(branchSelect.value) : 1;
+      const branch = allSucursales.find(x => x.id === branchId) || allSucursales[0];
+
+      let msg = `*NUEVO PEDIDO - FERRETERÍA HR* 🛒\n\n`;
+      msg += `*Cliente:* ${name}\n`;
+      msg += `*Sucursal:* ${branch.tabName}\n`;
+      msg += `-------------------------------------------\n\n`;
+      
+      let grandTotal = 0;
+      
+      cart.forEach((item, idx) => {
+        const parsePrice = str => {
+          if (!str) return 0;
+          const clean = str.replace(/[^\d]/g, '');
+          return parseInt(clean) || 0;
+        };
+        const itemPriceVal = parsePrice(item.precio);
+        const subtotal = itemPriceVal * item.cantidad;
+        grandTotal += subtotal;
+
+        msg += `*${idx + 1}.* ${item.nombre}\n`;
+        msg += `   Categoría: ${item.categoria}\n`;
+        msg += `   Cantidad: ${item.cantidad} x ${item.precio}\n`;
+        msg += `   Subtotal: ₡${subtotal.toLocaleString('es-CR')}\n\n`;
+      });
+      
+      msg += `-------------------------------------------\n`;
+      msg += `*TOTAL A PAGAR:* ₡${grandTotal.toLocaleString('es-CR')} (IVA Incluido)\n\n`;
+      msg += `_Este pedido fue generado desde el sitio web de Ferretería HR._`;
+
+      const encodedMsg = encodeURIComponent(msg);
+      const phone = branch.whatsappVal || '50685841660';
+
+      const waUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedMsg}`;
+      window.open(waUrl, '_blank');
+
+      cart = [];
+      localStorage.removeItem('hr_cart_v2');
+      updateCartUI();
+      cerrarCarrito();
+      
+      if (nameInput) nameInput.value = '';
+      cerrarCatalogoCompleto();
+    };
 
     // --- INICIALIZACIÓN ---
     (function initLoader() {
