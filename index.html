@@ -4884,7 +4884,7 @@
         const hasImgs = p.imagenes && p.imagenes.length > 0;
         const mainImg = hasImgs ? p.imagenes[0] : '';
         const imgHtml = hasImgs ? `
-          <img src="${mainImg}" alt="${p.nombre}" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/FFD000?text=${encodeURIComponent(p.nombre)}';">
+          <img src="${mainImg}" class="active" alt="${p.nombre}" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/FFD000?text=${encodeURIComponent(p.nombre)}';">
         ` : `<div class="emoji-placeholder" style="font-size:3rem; display:flex; align-items:center; justify-content:center; height:100%;">📦</div>`;
 
         const badgeHtml = p.estado === 'oferta' ? '<div class="prod-badges"><div class="badge oferta">Oferta</div></div>' : '';
