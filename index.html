@@ -3400,6 +3400,9 @@
       </p>
     </div>
 
+    <!-- Filtros de categoría -->
+    <div class="filtros-bar reveal" id="filtrosBar" style="margin-top:2rem;"></div>
+
     <!-- Grid -->
     <div class="productos-grid reveal" id="productosGrid">
       <!-- Se carga dinámicamente -->
@@ -3602,6 +3605,7 @@
 
     function renderFiltros(productos) {
       const bar = document.getElementById('filtrosBar');
+      if (!bar) { console.warn('filtrosBar element not found'); return; }
       const cats = getCategorias(productos);
       bar.innerHTML = `<button class="f-btn ${filtroActivo === 'todos' ? 'active' : ''}" onclick="filtrar(this,'todos')">Todos</button>`;
       cats.forEach(cat => {
@@ -3610,7 +3614,7 @@
 
       // Actualizar footer categorías
       const fc = document.getElementById('footCats');
-      fc.innerHTML = cats.slice(0, 5).map(c => `<li><a href="#catalogo" onclick="filtrar(null,'${c}')">${c}</a></li>`).join('');
+      if (fc) fc.innerHTML = cats.slice(0, 5).map(c => `<li><a href="#catalogo" onclick="filtrar(null,'${c}')">${c}</a></li>`).join('');
     }
 
     function filtrar(btn, cat) {
@@ -3836,22 +3840,23 @@
 
     function loadSlides() {
       const saved = localStorage.getItem('hr_slides_v2');
-      allSlides = [
+      const defaultSlides = [
         { t1: 'TODO LO QUE', t2: 'NECESITAS', t3: 'CONSTRUIR', desc: 'Herramientas profesionales, materiales de construcción y asesoría técnica especializada. En HR Ferretería encontrás todo para tus proyectos.', image: 'banner_materiales.png' },
         { t1: 'HERRAMIENTAS DE', t2: 'PODER Y', t3: 'PRECISIÓN', desc: 'Las mejores marcas del mercado con garantía y respaldo técnico. Maximiza tu productividad.', image: 'banner_herramientas.png' },
         { t1: 'ACABADOS', t2: 'PREMIUM', t3: 'AL MEJOR PRECIO', desc: 'Pinturas, grifería, accesorios y más para darle el estilo perfecto a tu hogar u oficina.', image: 'banner_acabados.png' }
       ];
+      allSlides = defaultSlides;
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (parsed.length > 0) allSlides = parsed;
+          if (parsed.length > 0 && parsed[0] && parsed[0].t1) allSlides = parsed;
         } catch (e) { }
       }
     }
 
     function loadServicios() {
       const saved = localStorage.getItem('hr_servicios_v2');
-      allServicios = [
+      const defaultServicios = [
         { id: 1, icon: '🏗️', name: 'MATERIALES PARA LA CONSTRUCCIÓN', desc: 'Ofrecemos una amplia gama de materiales para la construcción y trabajamos con los mejores y mas reconocidos aliados comerciales.' },
         { id: 2, icon: '⚡', name: 'Herramientas Eléctricas', desc: 'Taladros, amoladoras, sierras circulares y más de las mejores marcas: DeWalt, Makita, Bosch.' },
         { id: 3, icon: '🚜', name: 'ALQUILER DE MAQUINARIA', desc: 'Contamos con alquiler de maquinaria necesaria para la optimización de su construcción.' },
@@ -3859,10 +3864,11 @@
         { id: 5, icon: '🚛', name: 'Entrega a Domicilio', desc: 'Enviamos tu pedido directamente a la obra o tu hogar. Rápido, seguro y en todo el país.' },
         { id: 6, icon: '🤝', name: 'Asesoría Técnica', desc: 'Nuestros expertos te guían en la selección del material correcto para cada tipo de proyecto.' }
       ];
+      allServicios = defaultServicios;
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (parsed.length > 0) allServicios = parsed;
+          if (parsed.length > 0 && parsed[0] && parsed[0].name) allServicios = parsed;
         } catch (e) { }
       }
     }
@@ -3870,12 +3876,15 @@
     function renderServicios() {
       const grid = document.getElementById('serviciosGrid');
       if (!grid) return;
-      grid.innerHTML = allServicios.map((s, idx) => `
+      
+      const validServicios = allServicios.filter(s => s && s.name);
+      
+      grid.innerHTML = validServicios.map((s, idx) => `
         <div class="srv-card">
           <div class="srv-num">0${idx + 1}</div>
-          <span class="srv-icon">${s.icon}</span>
-          <div class="srv-name">${s.name}</div>
-          <p class="srv-desc">${s.desc}</p>
+          <span class="srv-icon">${s.icon || '🛠️'}</span>
+          <div class="srv-name">${s.name || ''}</div>
+          <p class="srv-desc">${s.desc || ''}</p>
         </div>
       `).join('');
     }
@@ -3903,7 +3912,7 @@
   
   function loadSucursales() {
       const saved = localStorage.getItem('hr_sucursales_v2');
-      allSucursales = [
+      const defaultSucursales = [
         {
           id: 1, tabName: 'Santa Clara', title: 'Sucursal Santa Clara · Florencia',
           address: '800 metros norte de la plaza de deportes<br>de Santa Clara, Florencia',
@@ -3917,10 +3926,11 @@
           whatsapp: '8985-2476', whatsappVal: '50689852476', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 12:00pm · 1:00pm — 4:00pm'
         }
       ];
+      allSucursales = defaultSucursales;
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (parsed.length > 0) allSucursales = parsed;
+          if (parsed.length > 0 && parsed[0] && parsed[0].tabName) allSucursales = parsed;
         } catch (e) { }
       }
     }
@@ -3941,22 +3951,22 @@
       } catch (e) { console.warn("Error cargando desde servidor, usando local...", e); }
 
       // 2. Fallback a LocalStorage si no hubo servidor o falló
-      if (allProductos.length === 0) {
+      if (allProductos.length === 0 || !allProductos[0] || !allProductos[0].nombre) {
         const pSaved = localStorage.getItem('hr_productos_local_v2');
         allProductos = pSaved ? JSON.parse(pSaved) : [...DEMO_PRODUCTOS];
       }
-      if (allSlides.length === 0) loadSlides();
-      if (allServicios.length === 0) loadServicios();
-      if (nosotrosData.title === undefined) loadNosotros();
-      if (allSucursales.length === 0) loadSucursales();
+      if (allSlides.length === 0 || !allSlides[0] || !allSlides[0].t1) loadSlides();
+      if (allServicios.length === 0 || !allServicios[0] || !allServicios[0].name) loadServicios();
+      if (nosotrosData.title === undefined || !nosotrosData.title) loadNosotros();
+      if (allSucursales.length === 0 || !allSucursales[0] || !allSucursales[0].tabName) loadSucursales();
 
-      renderHeroSlides();
-      renderProductos();
-      renderFiltros(allProductos);
-      renderServicios();
-      renderNosotros();
-      renderSucursales();
-      updateCartUI();
+      try { renderHeroSlides(); } catch(e) { console.error('Error en renderHeroSlides:', e); }
+      try { renderProductos(); } catch(e) { console.error('Error en renderProductos:', e); }
+      try { renderFiltros(allProductos); } catch(e) { console.error('Error en renderFiltros:', e); }
+      try { renderServicios(); } catch(e) { console.error('Error en renderServicios:', e); }
+      try { renderNosotros(); } catch(e) { console.error('Error en renderNosotros:', e); }
+      try { renderSucursales(); } catch(e) { console.error('Error en renderSucursales:', e); }
+      try { updateCartUI(); } catch(e) { console.error('Error en updateCartUI:', e); }
 
       // Exportar funciones de gestión de servicios
       window.openServiciosManager = function() {
@@ -4263,35 +4273,37 @@
       const panels = document.getElementById('sucursalesPanels');
       if (!tabs || !panels) return;
 
-      tabs.innerHTML = allSucursales.map((s, i) => `
+      const validSucursales = allSucursales.filter(s => s && s.id);
+
+      tabs.innerHTML = validSucursales.map((s, i) => `
         <div class="suc-tab ${i === 0 ? 'on' : ''}" onclick="switchSuc(${s.id})">
-          <div class="tab-dot"></div> 🏠 ${s.tabName}
+          <div class="tab-dot"></div> 🏠 ${s.tabName || 'Sucursal'}
         </div>
       `).join('');
 
-      panels.innerHTML = allSucursales.map((s, i) => `
+      panels.innerHTML = validSucursales.map((s, i) => `
         <div class="suc-panel ${i === 0 ? 'on' : ''} reveal" id="suc${s.id}">
           <div class="suc-info-block">
-            <div class="suc-subtitulo">${s.title}</div>
-            <div class="i-item"><div class="i-ico">📍</div><div><div class="i-label">Dirección</div><div class="i-val">${s.address}</div></div></div>
-            <div class="i-item"><div class="i-ico">📞</div><div><div class="i-label">Teléfono</div><div class="i-val"><a href="tel:${s.phoneVal}">${s.phone}</a></div></div></div>
-            <div class="i-item"><div class="i-ico">💬</div><div><div class="i-label">WhatsApp</div><div class="i-val"><a href="https://wa.me/${s.whatsappVal}" target="_blank">${s.whatsapp}</a></div></div></div>
-            <div class="i-item"><div class="i-ico">⏰</div><div><div class="i-label">Horario</div><div class="i-val">${s.schedule.replace(/\n/g, '<br>')}</div></div></div>
-            <a class="wa-link" href="https://wa.me/${s.whatsappVal}" target="_blank">💬 Escribir por WhatsApp</a>
+            <div class="suc-subtitulo">${s.title || ''}</div>
+            <div class="i-item"><div class="i-ico">📍</div><div><div class="i-label">Dirección</div><div class="i-val">${s.address || ''}</div></div></div>
+            <div class="i-item"><div class="i-ico">📞</div><div><div class="i-label">Teléfono</div><div class="i-val"><a href="tel:${s.phoneVal || ''}">${s.phone || ''}</a></div></div></div>
+            <div class="i-item"><div class="i-ico">💬</div><div><div class="i-label">WhatsApp</div><div class="i-val"><a href="https://wa.me/${s.whatsappVal || ''}" target="_blank">${s.whatsapp || ''}</a></div></div></div>
+            <div class="i-item"><div class="i-ico">⏰</div><div><div class="i-label">Horario</div><div class="i-val">${(s.schedule || '').replace(/\n/g, '<br>')}</div></div></div>
+            <a class="wa-link" href="https://wa.me/${s.whatsappVal || ''}" target="_blank">💬 Escribir por WhatsApp</a>
           </div>
           <div class="suc-right">
             <div class="mapa-box">
               <div class="mapa-grid-bg"></div>
-              <div class="mapa-pin"><div class="mapa-pin-ico">📍</div><div class="mapa-pin-lbl">${s.mapLabel}</div></div>
+              <div class="mapa-pin"><div class="mapa-pin-ico">📍</div><div class="mapa-pin-lbl">${s.mapLabel || ''}</div></div>
             </div>
             <div>
               <div class="form-grid">
                 <div class="f-group"><label>Nombre</label><input type="text" placeholder="Tu nombre completo"></div>
                 <div class="f-group"><label>Teléfono</label><input type="tel" placeholder="+506 0000-0000"></div>
                 <div class="f-group"><label>Correo electrónico</label><input type="email" placeholder="correo@ejemplo.com"></div>
-                <div class="f-group full"><label>Mensaje</label><textarea placeholder="Escribinos a la sucursal ${s.tabName}..."></textarea></div>
+                <div class="f-group full"><label>Mensaje</label><textarea placeholder="Escribinos a la sucursal ${s.tabName || ''}..."></textarea></div>
               </div>
-              <button class="f-submit" onclick="submitForm(this)">Enviar a ${s.tabName} 🚀</button>
+              <button class="f-submit" onclick="submitForm(this)">Enviar a ${s.tabName || ''} 🚀</button>
             </div>
           </div>
         </div>
