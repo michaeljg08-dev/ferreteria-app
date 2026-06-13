@@ -2779,6 +2779,467 @@
         font-size: 2.2rem;
       }
     }
+
+    /* --- INICIO ESTILOS DEL CARRO Y MODAL PREMIUM --- */
+    /* Cart Badge in Navbar */
+    .cart-badge {
+      background: #e74c3c;
+      color: var(--blanco);
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      margin-left: 0.3rem;
+      display: inline-block;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Floating Cart Button */
+    .floating-cart {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--amarillo);
+      color: var(--negro);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(255, 208, 0, 0.4);
+      cursor: pointer;
+      z-index: 1500;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 2px solid var(--blanco);
+    }
+    .floating-cart:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 15px 35px rgba(255, 208, 0, 0.6);
+      background: var(--amarillo-neon);
+    }
+    .f-cart-icon {
+      font-size: 1.8rem;
+    }
+    .floating-cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #e74c3c;
+      color: var(--blanco);
+      font-size: 0.8rem;
+      font-weight: bold;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--blanco);
+    }
+
+    /* Catalog Modal */
+    .catalog-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 2100;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .catalog-modal.show {
+      display: flex;
+    }
+    .catalog-box {
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 1200px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .catalog-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--gris-borde);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.5);
+    }
+    .catalog-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .catalog-subtitle {
+      color: var(--gris-texto);
+      font-size: 0.9rem;
+      margin: 0.2rem 0 0 0;
+    }
+    .catalog-close-btn {
+      background: none;
+      border: none;
+      color: var(--blanco);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    .catalog-close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--amarillo);
+      transform: rotate(90deg);
+    }
+    .catalog-filters-bar {
+      padding: 1rem 2rem;
+      background: rgba(26, 26, 26, 0.9);
+      border-bottom: 1px solid var(--gris-borde);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+    .cat-search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .cat-search-wrap input {
+      width: 100%;
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      color: var(--blanco);
+      padding: 0.8rem 1rem 0.8rem 2.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+    .cat-search-wrap input:focus {
+      border-color: var(--amarillo);
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 208, 0, 0.2);
+    }
+    .cat-search-icon {
+      position: absolute;
+      left: 1rem;
+      color: var(--gris-texto);
+      pointer-events: none;
+    }
+    .cat-select-wrap select {
+      width: 100%;
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      color: var(--blanco);
+      padding: 0.8rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 15px;
+      transition: all 0.3s;
+    }
+    .cat-select-wrap select:focus {
+      border-color: var(--amarillo);
+      outline: none;
+    }
+    .catalog-modal-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      background: var(--negro);
+    }
+    .catalog-modal-paginacion {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--gris-borde);
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      background: rgba(20, 20, 20, 0.8);
+    }
+
+    /* Cart Modal */
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 2200;
+      align-items: center;
+      justify-content: flex-end; /* Drawer style */
+    }
+    .cart-modal.show {
+      display: flex;
+    }
+    .cart-box {
+      background: var(--gris-oscuro);
+      border-left: 1px solid var(--gris-borde);
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+      animation: slideInRight 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gris-borde);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.5);
+    }
+    .cart-header h3 {
+      margin: 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+    .cart-close-btn {
+      background: none;
+      border: none;
+      color: var(--blanco);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    .cart-close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--amarillo);
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .cart-item-card {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      background: var(--gris-medio);
+      border: 1px solid var(--gris-borde);
+      border-radius: 8px;
+      position: relative;
+    }
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--gris-oscuro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .cart-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cart-item-details {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: bold;
+      color: var(--blanco);
+      font-size: 0.95rem;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+    .cart-item-price {
+      color: var(--amarillo);
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .cart-item-qty-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .cart-qty-btn {
+      background: var(--gris-borde);
+      color: var(--blanco);
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .cart-qty-btn:hover {
+      background: var(--amarillo);
+      color: var(--negro);
+    }
+    .cart-item-qty {
+      font-weight: bold;
+      font-size: 0.95rem;
+      width: 25px;
+      text-align: center;
+    }
+    .cart-item-delete {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .cart-item-delete:hover {
+      background: rgba(231, 76, 60, 0.1);
+      transform: scale(1.1);
+    }
+    .cart-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60%;
+      color: var(--gris-texto);
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    .cart-empty-icon {
+      font-size: 3.5rem;
+    }
+    .cart-checkout-form {
+      padding: 1.5rem;
+      border-top: 1px solid var(--gris-borde);
+      background: rgba(20, 20, 20, 0.8);
+    }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--blanco);
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cart-total-row span:last-child {
+      color: var(--amarillo);
+      font-size: 1.6rem;
+    }
+    .det-actions .det-cart-btn {
+      background: var(--amarillo);
+      color: var(--negro);
+      border: none;
+      padding: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-align: center;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      flex: 1;
+    }
+    .det-actions .det-cart-btn:hover {
+      background: var(--amarillo-neon);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 208, 0, .3);
+    }
+
+    /* Media query adjustments for catalog modal and filters */
+    @media(max-width: 900px) {
+      .catalog-modal {
+        padding: 0;
+      }
+      .catalog-box {
+        max-height: 100vh;
+        border-radius: 0;
+        border: none;
+      }
+      .catalog-filters-bar {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.5rem;
+      }
+      .catalog-modal-grid {
+        padding: 1rem;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+      .floating-cart {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 50px;
+        height: 50px;
+      }
+      .f-cart-icon {
+        font-size: 1.5rem;
+      }
+    }
+    /* --- FIN ESTILOS DEL CARRO Y MODAL PREMIUM --- */
   </style>
 </head>
 
@@ -2909,7 +3370,7 @@
     <div class="cat-header reveal">
       <div>
         <div class="section-label">Productos</div>
-        <h2 class="section-title">Catálogo <span class="o">en línea</span></h2>
+        <h2 class="section-title">Destacados <span class="o">& Ofertas</span></h2>
       </div>
       <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
         <div class="sheets-status">
@@ -2939,26 +3400,17 @@
       </p>
     </div>
 
-    <!-- Filtros -->
-    <div class="filtros-bar reveal" id="filtrosBar">
-      <button class="f-btn active" onclick="filtrar(this,'todos')">Todos</button>
-      <button class="f-btn" onclick="filtrar(this,'Construcción')">Construcción</button>
-      <button class="f-btn" onclick="filtrar(this,'Eléctrico')">Eléctrico</button>
-      <button class="f-btn" onclick="filtrar(this,'Fijación')">Fijación</button>
-      <button class="f-btn" onclick="filtrar(this,'Fontanería')">Fontanería</button>
-      <button class="f-btn" onclick="filtrar(this,'Herramientas')">Herramientas</button>
-      <button class="f-btn" onclick="filtrar(this,'Pintura')">Pintura</button>
-    </div>
-
     <!-- Grid -->
     <div class="productos-grid reveal" id="productosGrid">
       <!-- Se carga dinámicamente -->
     </div>
 
-    <!-- Paginación -->
-    <div class="paginacion reveal" id="paginacion"><button class="pag-btn active"
-        onclick="irPagina(1)">1</button><button class="pag-btn " onclick="irPagina(2)">2</button><button class="pag-btn"
-        onclick="irPagina(2)"> </button></div>
+    <!-- Botón Explorar Catálogo Completo -->
+    <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;" class="reveal">
+      <button class="over-btn" style="padding: 1.2rem 2.5rem; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.8rem; background: var(--amarillo); color: var(--negro); font-family: 'Barlow Condensed', sans-serif; font-weight: bold; border: none; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); cursor: pointer; transition: all 0.3s;" onclick="abrirCatalogoCompleto()">
+        🔎 EXPLORAR CATÁLOGO COMPLETO
+      </button>
+    </div>
   </section>
 
   <!-- ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   NOSOTROS ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═  ═"═   -->
@@ -3373,9 +3825,9 @@
     function loadSlides() {
       const saved = localStorage.getItem('hr_slides_v2');
       allSlides = [
-        { t1: 'TODO LO QUE', t2: 'NECESITAS', t3: 'CONSTRUIR', desc: 'Herramientas profesionales, materiales de construcción y asesoría técnica especializada. En HR Ferretería encontrás todo para tus proyectos.', icon: '🏗️', image: 'banner_materiales.png' },
-        { t1: 'HERRAMIENTAS DE', t2: 'PODER Y', t3: 'PRECISIÓN', desc: 'Las mejores marcas del mercado con garantía y respaldo técnico. Maximiza tu productividad.', icon: '⚡', image: 'banner_herramientas.png' },
-        { t1: 'ACABADOS', t2: 'PREMIUM', t3: 'AL MEJOR PRECIO', desc: 'Pinturas, grifería, accesorios y más para darle el estilo perfecto a tu hogar u oficina.', icon: '🎨', image: 'banner_acabados.png' }
+        { t1: 'TODO LO QUE', t2: 'NECESITAS', t3: 'CONSTRUIR', desc: 'Herramientas profesionales, materiales de construcción y asesoría técnica especializada. En HR Ferretería encontrás todo para tus proyectos.', image: 'banner_materiales.png' },
+        { t1: 'HERRAMIENTAS DE', t2: 'PODER Y', t3: 'PRECISIÓN', desc: 'Las mejores marcas del mercado con garantía y respaldo técnico. Maximiza tu productividad.', image: 'banner_herramientas.png' },
+        { t1: 'ACABADOS', t2: 'PREMIUM', t3: 'AL MEJOR PRECIO', desc: 'Pinturas, grifería, accesorios y más para darle el estilo perfecto a tu hogar u oficina.', image: 'banner_acabados.png' }
       ];
       if (saved) {
         try {
@@ -3703,6 +4155,15 @@
                 document.getElementById(targetId).value = res.url;
                 btn.textContent = '✅ ¡Subida!';
                 setTimeout(() => { btn.textContent = 'Subir Foto 📷'; btn.disabled = false; }, 2000);
+                
+                // [Auto-save and Preview Fix]
+                if (targetId === 'sImage') {
+                    const preview = document.getElementById('sImagePreview');
+                    if (preview) {
+                        preview.innerHTML = `<img src="${res.url}" style="max-width:100%; max-height:150px; border-radius:6px; margin-top:0.5rem; object-fit:cover;" alt="Preview">`;
+                    }
+                    window.saveSlide(); // Auto-guardar para actualizar el hero
+                }
             } else {
                 alert("Error: " + res.message);
                 btn.textContent = '❌ Error';
@@ -3744,7 +4205,9 @@
       list.innerHTML = allSlides.map((s, i) => `
         <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; background:var(--gris-oscuro);">
            <div style="display:flex; gap:1rem; align-items:center;">
-             <span style="font-size:2rem;">${s.icon}</span>
+             <div style="width:40px; height:40px; background:var(--gris-medio); border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                <img src="${s.image || 'https://placehold.co/40x40'}" style="width:100%; height:100%; object-fit:cover;">
+             </div>
              <div>
                <div style="font-weight:bold; color:var(--blanco);">${s.t1} ${s.t2}</div>
                <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
@@ -3841,51 +4304,6 @@
           `).join('');
       }
     }
-
-    // Modal Slide Editor
-    window.openSlideEditor = (idx = -1) => {
-        const isEdit = idx >= 0;
-        document.getElementById('slideEditTitle').textContent = isEdit ? 'Editar Slide' : 'Agregar Nuevo Slide';
-        document.getElementById('editSlideIdx').value = idx;
-        if (isEdit) {
-            const s = allSlides[idx];
-            document.getElementById('sT1').value = s.t1;
-            document.getElementById('sT2').value = s.t2;
-            document.getElementById('sT3').value = s.t3;
-            document.getElementById('sDesc').value = s.desc;
-            document.getElementById('sImage').value = s.image;
-        } else {
-            document.getElementById('sT1').value = '';
-            document.getElementById('sT2').value = '';
-            document.getElementById('sT3').value = '';
-            document.getElementById('sDesc').value = '';
-            document.getElementById('sImage').value = '';
-        }
-        document.getElementById('slideEditor').classList.add('show');
-    };
-    window.closeSlideEditor = () => document.getElementById('slideEditor').classList.remove('show');
-    window.saveSlide = () => {
-        const idx = parseInt(document.getElementById('editSlideIdx').value);
-        const s = {
-            t1: document.getElementById('sT1').value,
-            t2: document.getElementById('sT2').value,
-            t3: document.getElementById('sT3').value,
-            desc: document.getElementById('sDesc').value,
-            image: document.getElementById('sImage').value
-        };
-        if (idx >= 0) allSlides[idx] = s;
-        else allSlides.push(s);
-        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
-        renderHeroSlides(); renderDashSlides(); closeSlideEditor(); initSlider();
-        syncConServidor();
-    };
-    window.deleteSlide = (idx) => {
-        if (!confirm('¿Seguro?')) return;
-        allSlides.splice(idx,1);
-        localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
-        renderHeroSlides(); renderDashSlides(); initSlider();
-    };
-    window.editSlide = (idx) => window.openSlideEditor(idx);
 
     function initNav() {
       const nav = document.querySelector('nav');
@@ -4101,15 +4519,21 @@
             document.getElementById('sT2').value = s.t2;
             document.getElementById('sT3').value = s.t3;
             document.getElementById('sDesc').value = s.desc;
-            document.getElementById('sIcon').value = s.icon;
             document.getElementById('sImage').value = s.image;
+            
+            // [Preview Fix]
+            const preview = document.getElementById('sImagePreview');
+            if (preview && s.image) {
+                preview.innerHTML = `<img src="${s.image}" style="max-width:100%; max-height:150px; border-radius:6px; margin-top:0.5rem; object-fit:cover;" alt="Preview">`;
+            } else if (preview) { preview.innerHTML = ''; }
         } else {
             document.getElementById('sT1').value = '';
             document.getElementById('sT2').value = '';
             document.getElementById('sT3').value = '';
             document.getElementById('sDesc').value = '';
-            document.getElementById('sIcon').value = '✨';
             document.getElementById('sImage').value = '';
+            const previewNew = document.getElementById('sImagePreview');
+            if (previewNew) previewNew.innerHTML = '';
         }
         document.getElementById('slideEditor').classList.add('show');
     };
@@ -4131,7 +4555,6 @@
             t2: document.getElementById('sT2').value,
             t3: document.getElementById('sT3').value,
             desc: document.getElementById('sDesc').value,
-            icon: document.getElementById('sIcon').value,
             image: document.getElementById('sImage').value
         };
         if (id >= 0) allSlides[id] = slide; else allSlides.push(slide);
@@ -4148,7 +4571,6 @@
 
       tbody.innerHTML = allProductos.map(p => `
         <tr>
-          <td><span style="font-size:1.5rem;">${p.emoji || '📦'}</span></td>
           <td style="font-weight:bold; color:var(--blanco);">${p.nombre}</td>
           <td style="color:var(--gris-texto); font-size:0.85rem;">${p.categoria}</td>
           <td style="color:var(--amarillo); font-weight:bold;">${p.precio}</td>
@@ -4408,7 +4830,7 @@
           </div>
 
           <div class="det-actions">
-            <div class="det-qty-row">
+            <div class="det-qty-row" style="margin-bottom: 1rem;">
               <label class="det-desc-title">Cantidad:</label>
               <div class="det-qty">
                 <button onclick="cambiarCantidad(-1)">-</button>
@@ -4417,16 +4839,132 @@
               </div>
             </div>
 
-            <a id="detWaBtn" href="https://wa.me/85841660?text=Hola!%20Me%20interesa..." target="_blank"
-              class="det-wa-btn">
-              🛒 CONSULTAR POR WHATSAPP
-            </a>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; width: 100%;">
+              <button class="det-cart-btn" onclick="agregarAlCarritoDesdeDetalle()">
+                Agregar al Carrito 🛒
+              </button>
+              <a id="detWaBtn" href="https://wa.me/85841660?text=Hola!%20Me%20interesa..." target="_blank"
+                class="det-wa-btn" style="flex: 1; min-width: 200px;">
+                Preguntar por WhatsApp 💬
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+
+  <!-- Modal: Catálogo Completo Premium -->
+  <div id="catalogModal" class="catalog-modal" onclick="if(event.target===this) cerrarCatalogoCompleto()">
+    <div class="catalog-box">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">Catálogo <span class="o">Completo</span></h2>
+          <p class="catalog-subtitle">Busca y filtra entre todos nuestros artículos disponibles</p>
+        </div>
+        <button class="catalog-close-btn" onclick="cerrarCatalogoCompleto()">&times;</button>
+      </div>
+      
+      <div class="catalog-filters-bar">
+        <!-- Buscador -->
+        <div class="cat-search-wrap">
+          <span class="cat-search-icon">🔍</span>
+          <input type="text" id="catModalSearch" placeholder="Buscar por nombre o descripción..." oninput="filtrarCatalogoModal()">
+        </div>
+        
+        <!-- Categorías -->
+        <div class="cat-select-wrap">
+          <select id="catModalCategory" onchange="filtrarCatalogoModal()">
+            <option value="todos">Todas las categorías</option>
+            <option value="Construcción">Construcción</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Fijación">Fijación</option>
+            <option value="Fontanería">Fontanería</option>
+            <option value="Herramientas">Herramientas</option>
+            <option value="Pintura">Pintura</option>
+          </select>
+        </div>
+        
+        <!-- Estado -->
+        <div class="cat-select-wrap">
+          <select id="catModalStatus" onchange="filtrarCatalogoModal()">
+            <option value="todos">Cualquier estado</option>
+            <option value="activo">Solo Activos</option>
+            <option value="oferta">Solo Ofertas</option>
+          </select>
+        </div>
+        
+        <!-- Ordenar -->
+        <div class="cat-select-wrap">
+          <select id="catModalSort" onchange="filtrarCatalogoModal()">
+            <option value="default">Orden por defecto</option>
+            <option value="price-asc">Precio: Menor a Mayor</option>
+            <option value="price-desc">Precio: Mayor a Menor</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Grid de Productos -->
+      <div class="catalog-modal-grid" id="catModalGrid">
+        <!-- Se carga dinámicamente -->
+      </div>
+      
+      <!-- Paginación -->
+      <div class="catalog-modal-paginacion" id="catModalPaginacion">
+        <!-- Se carga dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Carrito de Compras Drawer -->
+  <div id="cartModal" class="cart-modal" onclick="if(event.target===this) cerrarCarrito()">
+    <div class="cart-box">
+      <div class="cart-header">
+        <h3>🛒 Tu Carrito</h3>
+        <button class="cart-close-btn" onclick="cerrarCarrito()">&times;</button>
+      </div>
+      
+      <!-- Listado de Artículos -->
+      <div class="cart-items" id="cartItemsList">
+        <!-- Generado dinámicamente -->
+      </div>
+      
+      <!-- Formulario de Checkout -->
+      <div class="cart-checkout-form" id="cartCheckoutForm">
+        <div class="cart-total-row" style="margin-bottom: 1rem;">
+          <span>Total:</span>
+          <span id="cartTotalVal">₡0.00</span>
+        </div>
+        
+        <div style="border-top: 1px solid var(--gris-borde); padding-top: 1rem; margin-top: 0.5rem;">
+          <h4 style="margin: 0 0 0.8rem 0; font-family:'Barlow Condensed'; font-size:1.1rem; text-transform:uppercase;">Datos para el pedido</h4>
+          
+          <div class="dash-input-group" style="margin-bottom: 0.8rem;">
+            <label style="font-size: 0.8rem; color: var(--gris-texto); margin-bottom: 0.2rem; display: block;">Tu Nombre Completo *</label>
+            <input type="text" id="cartClientName" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 0.6rem; background: var(--gris-medio); border: 1px solid var(--gris-borde); border-radius: 4px; color: var(--blanco);">
+          </div>
+          
+          <div class="dash-input-group" style="margin-bottom: 1rem;">
+            <label style="font-size: 0.8rem; color: var(--gris-texto); margin-bottom: 0.2rem; display: block;">Enviar pedido a la sucursal *</label>
+            <select id="cartBranchSelect" style="width: 100%; padding: 0.6rem; background: var(--gris-medio); border: 1px solid var(--gris-borde); border-radius: 4px; color: var(--blanco); cursor: pointer;">
+              <!-- Se carga dinámicamente -->
+            </select>
+          </div>
+        </div>
+        
+        <button class="f-submit" style="margin-top: 0.5rem; width: 100%; font-size: 1rem;" onclick="completarPedidoWhatsApp()">
+          📲 ENVIAR PEDIDO POR WHATSAPP
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón Flotante del Carrito -->
+  <div class="floating-cart" id="floatingCartBtn" onclick="abrirCarrito()" style="display: none;">
+    <span class="f-cart-icon">🛒</span>
+    <span id="floatingCartCount" class="floating-cart-badge">0</span>
+  </div>
 
   <!-- Sistema Admin -->
   <div id="loginModal" class="login-modal" onclick="if(event.target===this) toggleLogin(false)">
@@ -4492,7 +5030,6 @@
           <table class="dash-table">
             <thead>
               <tr>
-                <th width="60">Icono</th>
                 <th>Nombre del Producto</th>
                 <th>Categoría</th>
                 <th>Precio</th>
@@ -4569,6 +5106,7 @@
             <button class="btn-dash sm" onclick="this.nextElementSibling.click()">Subir Foto 📷</button>
             <input type="file" style="display:none" onchange="subirImagen(this, 'sImage')">
         </div>
+        <div id="sImagePreview" style="margin-top:0.5rem;"></div>
       </div>
       <button class="f-submit" onclick="saveSlide()">Guardar Cambios</button>
       <button class="btn-dash" style="width:100%; margin-top:0.5rem;" onclick="closeSlideEditor()">Cancelar</button>
