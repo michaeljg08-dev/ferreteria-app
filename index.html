@@ -4804,9 +4804,6 @@
       const searchInput = document.getElementById('catModalSearch');
       if (searchInput) searchInput.value = '';
       
-      const statusSelect = document.getElementById('catModalStatus');
-      if (statusSelect) statusSelect.value = 'todos';
-      
       const sortSelect = document.getElementById('catModalSort');
       if (sortSelect) sortSelect.value = 'default';
       
@@ -4834,7 +4831,6 @@
 
       const searchValue = document.getElementById('catModalSearch').value.toLowerCase().trim();
       const catValue = document.getElementById('catModalCategory').value;
-      const statusValue = document.getElementById('catModalStatus').value;
       const sortValue = document.getElementById('catModalSort').value;
 
       let filtered = allProductos.filter(p => {
@@ -4846,9 +4842,8 @@
           p.categoria.toLowerCase().includes(searchValue);
           
         const matchesCategory = catValue === 'todos' || p.categoria === catValue;
-        const matchesStatus = statusValue === 'todos' || p.estado === statusValue;
 
-        return matchesSearch && matchesCategory && matchesStatus;
+        return matchesSearch && matchesCategory;
       });
 
       if (sortValue === 'price-asc' || sortValue === 'price-desc') {
@@ -4893,7 +4888,7 @@
               <div class="prod-cat">${p.categoria}</div>
               <div class="prod-nom" onclick="verProducto(${p.id})" style="cursor:pointer;">${p.nombre}</div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
-                <div class="prod-precio" style="margin-top:0;">${p.precio}</div>
+                <div class="prod-precio" style="margin-top:0; font-size:1.1rem; color:var(--amarillo); font-weight:bold;">${p.precio || p.price || 'Consultar'}</div>
                 <button class="over-btn" style="padding:0.4rem 0.8rem; font-size:0.85rem; background:var(--amarillo); color:var(--negro); font-weight:bold; clip-path:none; border-radius:4px;" onclick="agregarAlCarrito(${p.id}, 1, this)">
                   Agregar 🛒
                 </button>
@@ -5271,14 +5266,6 @@
           </select>
         </div>
         
-        <!-- Estado -->
-        <div class="cat-select-wrap">
-          <select id="catModalStatus" onchange="filtrarCatalogoModal()">
-            <option value="todos">Cualquier estado</option>
-            <option value="activo">Solo Activos</option>
-            <option value="oferta">Solo Ofertas</option>
-          </select>
-        </div>
         
         <!-- Ordenar -->
         <div class="cat-select-wrap">
