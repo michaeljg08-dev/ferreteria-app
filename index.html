@@ -19,7 +19,7 @@
       --amarillo-neon: #FFE500;
       --amarillo-suave: rgba(255, 208, 0, 0.10);
       --blanco: #f5f5f0;
-      --gris-texto: #888;
+      --gris-texto: #d8e0e8;
     }
 
     * {
@@ -250,11 +250,13 @@
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      transition: color 0.2s;
+      display: inline-block;
+      transition: color 0.2s, transform 0.2s;
     }
 
     .nav-links a:hover {
       color: var(--amarillo);
+      transform: scale(1.15);
     }
 
     .nav-cta {
@@ -1339,31 +1341,129 @@
 """""""""""""""""""""""""""""" */
     #nosotros {
       padding: 7rem 5%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
       position: relative;
       z-index: 1;
     }
 
-    .nos-img-box {
+    .nosotros-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 5rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    @media (max-width: 991px) {
+      .nosotros-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    .nos-slider {
+      width: 100%;
       aspect-ratio: 4/3;
       background: var(--gris-medio);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 7rem;
       border: 1px solid var(--gris-borde);
       position: relative;
       overflow: hidden;
+      border-radius: 8px;
     }
 
-    .nos-img-box::after {
+    .nos-slider::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg, rgba(255, 208, 0, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .nos-slides {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .nos-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .nos-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .nos-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nos-slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 33, 55, 0.7);
+      border: 1px solid var(--gris-borde);
+      color: var(--blanco);
+      font-size: 1.2rem;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+
+    .nos-slider-btn:hover {
+      background: var(--amarillo);
+      border-color: var(--amarillo);
+      color: var(--negro);
+    }
+
+    .nos-slider-btn.prev {
+      left: 15px;
+    }
+
+    .nos-slider-btn.next {
+      right: 15px;
+    }
+
+    .nos-slider-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .nos-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .nos-dot.active {
+      background: var(--amarillo);
+      transform: scale(1.25);
+      box-shadow: 0 0 8px var(--amarillo);
     }
 
     .nos-tag {
@@ -1378,6 +1478,7 @@
       font-size: 0.85rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
+      z-index: 3;
     }
 
     .nos-border {
@@ -1388,6 +1489,7 @@
       bottom: -1rem;
       border: 1px solid rgba(255, 208, 0, 0.18);
       pointer-events: none;
+      z-index: 1;
     }
 
     .nos-wrap {
@@ -1396,25 +1498,35 @@
 
     .nos-p {
       color: var(--gris-texto);
-      font-size: 0.92rem;
+      font-size: 1.05rem;
       line-height: 1.8;
-      margin-bottom: 0.9rem;
+      margin-bottom: 1.2rem;
       text-align: justify;
     }
 
     .valores {
-      margin-top: 1.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
     }
 
     .valor {
       display: flex;
       align-items: center;
       gap: 0.8rem;
-      font-size: 0.88rem;
+      font-size: 0.95rem;
       font-weight: 500;
+      background: var(--carbon);
+      padding: 0.8rem 1.2rem;
+      border: 1px solid var(--gris-borde);
+      transition: all 0.3s ease;
+    }
+
+    .valor:hover {
+      border-color: var(--amarillo);
+      transform: translateY(-2px);
+      background: var(--gris-oscuro);
     }
 
     .valor::before {
@@ -3900,13 +4012,19 @@
           '🤝 Atención personalizada y asesoría técnica gratuita',
           '💰 Precios competitivos y opciones de crédito',
           '🚚 Servicio de entrega en la zona'
-        ]
+        ],
+        img1: 'banner_herramientas.png',
+        img2: 'banner_acabados.png',
+        img3: 'banner_materiales.png'
       };
       if (saved) {
         try {
           nosotrosData = JSON.parse(saved);
         } catch (e) { }
       }
+      if (!nosotrosData.img1) nosotrosData.img1 = 'banner_herramientas.png';
+      if (!nosotrosData.img2) nosotrosData.img2 = 'banner_acabados.png';
+      if (!nosotrosData.img3) nosotrosData.img3 = 'banner_materiales.png';
   }
   
   function loadSucursales() {
@@ -3916,20 +4034,34 @@
           id: 1, tabName: 'Santa Clara', title: 'Sucursal Santa Clara · Florencia',
           address: '800 metros norte de la plaza de deportes<br>de Santa Clara, Florencia',
           mapLabel: 'Santa Clara · Florencia, CR', phone: '2475-6465', phoneVal: '+50624756465',
-          whatsapp: '8584-1660', whatsappVal: '50685841660', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 3:30pm'
+          whatsapp: '8584-1660', whatsappVal: '50685841660', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 3:30pm',
+          mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.364426543093!2d-84.52090248520188!3d10.362453000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa06f0f75a65dc5%3A0x732fb729a9c9a9e5!2sFerreter%C3%ADa%20HR%20Santa%20Clara!5e0!3m2!1ses-419!2scr!4v1718306000000!5m2!1ses-419!2scr'
         },
         {
           id: 2, tabName: 'Valle Azul', title: 'Sucursal Valle Azul · San Ramón',
           address: '200 metros sur de la plaza de deportes<br>de Valle Azul, San Lorenzo, San Ramón',
           mapLabel: 'Valle Azul · San Ramón, CR', phone: '8995-2476', phoneVal: '+50689952476',
-          whatsapp: '8985-2476', whatsappVal: '50689852476', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 12:00pm · 1:00pm — 4:00pm'
+          whatsapp: '8985-2476', whatsappVal: '50689852476', schedule: 'Lun — Vie: 7:00am — 12:00pm · 1:00pm — 5:30pm<br>Sábados: 7:00am — 12:00pm · 1:00pm — 4:00pm',
+          mapEmbed: 'https://maps.google.com/maps?q=Ferreter%C3%ADa%20HR%20Valle%20Azul,%20San%20Ram%C3%B3n&t=&z=15&ie=UTF8&iwloc=&output=embed'
         }
       ];
       allSucursales = defaultSucursales;
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (parsed.length > 0 && parsed[0] && parsed[0].tabName) allSucursales = parsed;
+          if (parsed.length > 0 && parsed[0] && parsed[0].tabName) {
+            allSucursales = parsed;
+            // Migrar / agregar valor si no existía o si usaba el enlace de coordenadas anterior
+            allSucursales.forEach(s => {
+              if (s.id == 1 && (!s.mapEmbed || !s.mapEmbed.includes('maps/embed?pb='))) {
+                s.mapEmbed = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.364426543093!2d-84.52090248520188!3d10.362453000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa06f0f75a65dc5%3A0x732fb729a9c9a9e5!2sFerreter%C3%ADa%20HR%20Santa%20Clara!5e0!3m2!1ses-419!2scr!4v1718306000000!5m2!1ses-419!2scr';
+              }
+              if (s.id == 2 && !s.mapEmbed) {
+                s.mapEmbed = 'https://maps.google.com/maps?q=Ferreter%C3%ADa%20HR%20Valle%20Azul,%20San%20Ram%C3%B3n&t=&z=15&ie=UTF8&iwloc=&output=embed';
+              }
+            });
+            localStorage.setItem('hr_sucursales_v2', JSON.stringify(allSucursales));
+          }
         } catch (e) { }
       }
     }
@@ -4017,11 +4149,14 @@
 
       // Exportar funciones de gestión de Nosotros
       window.openNosotrosEditor = function() {
-        document.getElementById('nosTag').value = nosotrosData.tag;
-        document.getElementById('nosTitle').value = nosotrosData.title;
-        document.getElementById('nosP1').value = nosotrosData.p1;
-        document.getElementById('nosP2').value = nosotrosData.p2;
+        document.getElementById('nosTag').value = nosotrosData.tag || '';
+        document.getElementById('nosTitle').value = nosotrosData.title || '';
+        document.getElementById('nosP1').value = nosotrosData.p1 || '';
+        document.getElementById('nosP2').value = nosotrosData.p2 || '';
         document.getElementById('nosValores').value = (nosotrosData.valores || []).join('\n');
+        document.getElementById('nosImg1').value = nosotrosData.img1 || '';
+        document.getElementById('nosImg2').value = nosotrosData.img2 || '';
+        document.getElementById('nosImg3').value = nosotrosData.img3 || '';
         document.getElementById('nosotrosEditor').classList.add('show');
       };
       window.closeNosotrosEditor = function() {
@@ -4033,7 +4168,10 @@
           title: document.getElementById('nosTitle').value,
           p1: document.getElementById('nosP1').value,
           p2: document.getElementById('nosP2').value,
-          valores: document.getElementById('nosValores').value.split('\n').filter(v => v.trim() !== '')
+          valores: document.getElementById('nosValores').value.split('\n').filter(v => v.trim() !== ''),
+          img1: document.getElementById('nosImg1').value.trim(),
+          img2: document.getElementById('nosImg2').value.trim(),
+          img3: document.getElementById('nosImg3').value.trim()
         };
         localStorage.setItem('hr_nosotros_v2', JSON.stringify(nosotrosData));
         renderNosotros();
@@ -4056,13 +4194,14 @@
         const s = allSucursales.find(x => x.id == id);
         if (!s) return;
         document.getElementById('editSucursalId').value = s.id;
-        document.getElementById('sucTabName').value = s.tabName;
-        document.getElementById('sucTitle').value = s.title;
-        document.getElementById('sucAddress').value = s.address;
-        document.getElementById('sucMapLabel').value = s.mapLabel;
-        document.getElementById('sucPhone').value = s.phone;
-        document.getElementById('sucWhatsapp').value = s.whatsapp;
-        document.getElementById('sucSchedule').value = s.schedule;
+        document.getElementById('sucTabName').value = s.tabName || '';
+        document.getElementById('sucTitle').value = s.title || '';
+        document.getElementById('sucAddress').value = s.address || '';
+        document.getElementById('sucMapLabel').value = s.mapLabel || '';
+        document.getElementById('sucPhone').value = s.phone || '';
+        document.getElementById('sucWhatsapp').value = s.whatsapp || '';
+        document.getElementById('sucSchedule').value = s.schedule || '';
+        document.getElementById('sucMapEmbed').value = s.mapEmbed || '';
         document.getElementById('sucursalEditor').classList.add('show');
       };
       window.closeSucursalEditor = function() {
@@ -4079,6 +4218,7 @@
           s.phone = document.getElementById('sucPhone').value;
           s.whatsapp = document.getElementById('sucWhatsapp').value;
           s.schedule = document.getElementById('sucSchedule').value;
+          s.mapEmbed = document.getElementById('sucMapEmbed').value.trim();
           s.phoneVal = '+506' + s.phone.replace(/[^0-9]/g, '');
           s.whatsappVal = '506' + s.whatsapp.replace(/[^0-9]/g, '');
           
@@ -4243,13 +4383,79 @@
       `).join('');
     }
 
+    let currentNosSlide = 0;
+    let nosInterval = null;
+
+    function initNosotrosSlider() {
+      if (nosInterval) clearInterval(nosInterval);
+      currentNosSlide = 0;
+      
+      const slides = document.querySelectorAll('.nos-slide');
+      const dots = document.querySelectorAll('.nos-dot');
+      if (!slides.length) return;
+
+      function showSlide(index) {
+        if (index >= slides.length) currentNosSlide = 0;
+        else if (index < 0) currentNosSlide = slides.length - 1;
+        else currentNosSlide = index;
+
+        slides.forEach((slide, idx) => {
+          if (idx === currentNosSlide) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+
+        dots.forEach((dot, idx) => {
+          if (idx === currentNosSlide) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+
+      window.moveNosSlide = function(n) {
+        showSlide(currentNosSlide + n);
+        resetNosTimer();
+      };
+
+      window.setNosSlide = function(n) {
+        showSlide(n);
+        resetNosTimer();
+      };
+
+      function resetNosTimer() {
+        if (nosInterval) clearInterval(nosInterval);
+        nosInterval = setInterval(() => {
+          showSlide(currentNosSlide + 1);
+        }, 5000);
+      }
+
+      resetNosTimer();
+    }
+
     function renderNosotros() {
       const container = document.getElementById('nosotrosContent');
       if (!container) return;
       container.innerHTML = `
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4rem; align-items:center;">
+        <div class="nosotros-grid">
            <div class="nos-wrap reveal">
-              <div class="nos-img-box">🏠</div>
+              <div class="nos-slider">
+                 <div class="nos-slides">
+                    <div class="nos-slide active"><img src="${nosotrosData.img1 || 'banner_herramientas.png'}" alt="Nosotros 1"></div>
+                    <div class="nos-slide"><img src="${nosotrosData.img2 || 'banner_acabados.png'}" alt="Nosotros 2"></div>
+                    <div class="nos-slide"><img src="${nosotrosData.img3 || 'banner_materiales.png'}" alt="Nosotros 3"></div>
+                 </div>
+                 <button class="nos-slider-btn prev" onclick="moveNosSlide(-1)">❮</button>
+                 <button class="nos-slider-btn next" onclick="moveNosSlide(1)">❯</button>
+                 <div class="nos-slider-dots">
+                    <span class="nos-dot active" onclick="setNosSlide(0)"></span>
+                    <span class="nos-dot" onclick="setNosSlide(1)"></span>
+                    <span class="nos-dot" onclick="setNosSlide(2)"></span>
+                 </div>
+              </div>
               <div class="nos-tag">${nosotrosData.tag || 'Desde el 2000'}</div>
               <div class="nos-border"></div>
            </div>
@@ -4259,12 +4465,13 @@
               <p class="nos-p">${nosotrosData.p1 || ''}</p>
               <p class="nos-p">${nosotrosData.p2 || ''}</p>
               <div class="valores">
-                ${(nosotrosData.valores || []).map(v => `<div class="valor">✅ ${v}</div>`).join('')}
+                ${(nosotrosData.valores || []).map(v => `<div class="valor">${v.replace(/^[✅🤝💰🚚\s]+/, '')}</div>`).join('')}
               </div>
            </div>
         </div>
       `;
       initReveal();
+      initNosotrosSlider();
     }
 
     function renderSucursales() {
@@ -4291,9 +4498,11 @@
             <a class="wa-link" href="https://wa.me/${s.whatsappVal || ''}" target="_blank">💬 Escribir por WhatsApp</a>
           </div>
           <div class="suc-right">
-            <div class="mapa-box">
-              <div class="mapa-grid-bg"></div>
-              <div class="mapa-pin"><div class="mapa-pin-ico">📍</div><div class="mapa-pin-lbl">${s.mapLabel || ''}</div></div>
+            <div class="mapa-box" style="padding:0; background:none; border-radius:8px; overflow:hidden;">
+              ${s.mapEmbed ? `<iframe src="${s.mapEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>` : `
+                <div class="mapa-grid-bg"></div>
+                <div class="mapa-pin"><div class="mapa-pin-ico">📍</div><div class="mapa-pin-lbl">${s.mapLabel || ''}</div></div>
+              `}
             </div>
             <div>
               <div class="form-grid">
@@ -5555,6 +5764,18 @@
         <label>Valores / Puntos Clave (Uno por línea)</label>
         <textarea id="nosValores" rows="4" placeholder="Calidad\nAtención..."></textarea>
       </div>
+      <div class="dash-input-group">
+        <label>Imagen 1 del Slider (URL o nombre de archivo)</label>
+        <input type="text" id="nosImg1" placeholder="Ej: banner_herramientas.png">
+      </div>
+      <div class="dash-input-group">
+        <label>Imagen 2 del Slider (URL o nombre de archivo)</label>
+        <input type="text" id="nosImg2" placeholder="Ej: banner_acabados.png">
+      </div>
+      <div class="dash-input-group">
+        <label>Imagen 3 del Slider (URL o nombre de archivo)</label>
+        <input type="text" id="nosImg3" placeholder="Ej: banner_materiales.png">
+      </div>
       <button class="f-submit" onclick="saveNosotros()">Guardar Cambios</button>
       <button class="btn-dash" style="width:100%; margin-top:0.5rem;" onclick="closeNosotrosEditor()">Cancelar</button>
     </div>
@@ -5686,6 +5907,10 @@
       <div class="dash-input-group">
         <label>Horarios (HTML permitido)</label>
         <textarea id="sucSchedule" rows="2"></textarea>
+      </div>
+      <div class="dash-input-group">
+        <label>URL de Mapa Embebido (Google Maps Iframe src)</label>
+        <input type="text" id="sucMapEmbed" placeholder="https://maps.google.com/maps?q=...">
       </div>
       <button class="f-submit" onclick="saveSucursal()">Guardar Sucursal</button>
       <button class="btn-dash" style="width:100%; margin-top:0.5rem;" onclick="closeSucursalEditor()">Cancelar</button>
