@@ -2033,6 +2033,55 @@
       opacity: 1;
     }
 
+    .prod-modal-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 33, 55, 0.7);
+      border: 1px solid var(--gris-borde);
+      color: var(--blanco);
+      font-size: 1.8rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3100;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .prod-modal-nav:hover {
+      background: var(--amarillo);
+      border-color: var(--amarillo);
+      color: var(--negro);
+      box-shadow: 0 0 15px rgba(255, 208, 0, 0.4);
+    }
+
+    .prod-modal-nav.prev {
+      left: 2%;
+    }
+
+    .prod-modal-nav.next {
+      right: 2%;
+    }
+
+    @media (max-width: 900px) {
+      .prod-modal-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      .prod-modal-nav.prev {
+        left: 10px;
+      }
+      .prod-modal-nav.next {
+        right: 10px;
+      }
+    }
+
     .modal-content {
       background: rgba(1, 30, 79, 0.85);
       backdrop-filter: blur(20px);
@@ -3761,6 +3810,32 @@
     let currentProducto = null;
     let currentImgIndex = 0;
 
+    window.navigateProduct = function (dir) {
+      if (!currentProducto || !allProductos.length) return;
+      const activeProducts = allProductos.filter(p => p && p.estado !== 'inactivo');
+      if (!activeProducts.length) return;
+
+      const currentIdx = activeProducts.findIndex(p => p.id === currentProducto.id);
+      if (currentIdx === -1) return;
+
+      const nextIdx = (currentIdx + dir + activeProducts.length) % activeProducts.length;
+      window.verProducto(activeProducts[nextIdx].id);
+    };
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('detalle');
+      if (modal && modal.classList.contains('show')) {
+        if (e.key === 'ArrowLeft') {
+          window.navigateProduct(-1);
+        } else if (e.key === 'ArrowRight') {
+          window.navigateProduct(1);
+        } else if (e.key === 'Escape') {
+          window.showCatalogo();
+        }
+      }
+    });
+
     window.verProducto = function (id) {
       const p = allProductos.find(prod => prod.id === id);
       if (!p) return;
@@ -5406,6 +5481,10 @@
 
   <!-- Modal Detalle de Producto -->
   <div id="detalle" class="modal" onclick="if(event.target===this) showCatalogo()">
+    <!-- Navigation arrows for products -->
+    <button class="prod-modal-nav prev" onclick="navigateProduct(-1)" title="Producto anterior">❮</button>
+    <button class="prod-modal-nav next" onclick="navigateProduct(1)" title="Producto siguiente">❯</button>
+
     <div class="modal-content det-modal-content">
       <span class="det-close" onclick="showCatalogo()">&times;</span>
 
