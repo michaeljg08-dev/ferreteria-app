@@ -17,8 +17,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          # IMPORTANTE: Cambia 'v2' por la carpeta de HostGator que desees
-          server-dir: public_html/v2/
+          # IMPORTANTE: Despliega directamente en la raíz del dominio principal
+          server-dir: public_html/
           exclude: |
             **/.git*
             **/.git*/**
