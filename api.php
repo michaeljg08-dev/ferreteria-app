@@ -78,9 +78,8 @@ if ($action === 'upload') {
     $target = $UPLOAD_DIR . $filename;
 
     if (move_uploaded_file($file['tmp_name'], $target)) {
-        // Devolver la URL completa (detectar protocolo y host)
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-        $url = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/" . $target;
+        // Devolver la ruta relativa para evitar problemas con localhost y diferentes IPs
+        $url = $target;
         echo json_encode(["status" => "ok", "url" => $url]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al mover el archivo"]);
