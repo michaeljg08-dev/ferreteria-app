@@ -30,3 +30,5 @@ jobs:
             task.md
             walkthrough.md
             implementation_plan*.md
+            datos.json
+            uploads/**
