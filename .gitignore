@@ -9,3 +9,7 @@ brain/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Database and uploaded media
+datos.json
+uploads/
