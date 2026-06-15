@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           # IMPORTANTE: Despliega directamente en la raíz del dominio principal
-          server-dir: public_html/
+          server-dir: ./
           exclude: |
             **/.git*
             **/.git*/**
