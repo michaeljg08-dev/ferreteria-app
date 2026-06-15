@@ -4268,22 +4268,51 @@
     }
 
     async function initApp() {
-      // 1. Intentar cargar desde Hostinger (Servidor)
+      let loaded = false;
+      // 1. Intentar cargar desde el Servidor API (api.php)
       try {
         const resp = await fetch(`${API_URL}?action=get`);
         if (resp.ok) {
-            const data = await resp.json();
-            if (data.productos) allProductos = data.productos;
-            if (data.slides) allSlides = data.slides;
-            if (data.servicios) allServicios = data.servicios;
-            if (data.sucursales) allSucursales = data.sucursales;
-            if (data.nosotros) nosotrosData = data.nosotros;
-            console.log("Datos cargados desde el servidor");
+            const text = await resp.text();
+            // Si retorna el archivo PHP como texto plano, no es JSON válido
+            if (text.trim().startsWith('{')) {
+                const data = JSON.parse(text);
+                if (data.productos) allProductos = data.productos;
+                if (data.slides) allSlides = data.slides;
+                if (data.servicios) allServicios = data.servicios;
+                if (data.sucursales) allSucursales = data.sucursales;
+                if (data.nosotros) nosotrosData = data.nosotros;
+                console.log("Datos cargados desde el servidor API (api.php)");
+                loaded = true;
+            } else {
+                console.warn("api.php no retornó JSON válido (posible servidor estático)");
+            }
         }
-      } catch (e) { console.warn("Error cargando desde servidor, usando local...", e); }
+      } catch (e) {
+         console.warn("Error cargando desde servidor API, usando fallback estático...", e);
+      }
 
-      // 2. Fallback a LocalStorage si no hubo servidor o falló
-      if (allProductos.length === 0 || !allProductos[0] || !allProductos[0].nombre) {
+      // 2. Si no cargó desde el API, intentar cargar directamente datos.json (para GitHub Pages o servidores estáticos)
+      if (!loaded) {
+         try {
+            const resp = await fetch('datos.json');
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data.productos) allProductos = data.productos;
+                if (data.slides) allSlides = data.slides;
+                if (data.servicios) allServicios = data.servicios;
+                if (data.sucursales) allSucursales = data.sucursales;
+                if (data.nosotros) nosotrosData = data.nosotros;
+                console.log("Datos cargados directamente desde datos.json estático");
+                loaded = true;
+            }
+         } catch (e) {
+            console.warn("Error cargando datos.json estático...", e);
+         }
+      }
+
+      // 3. Fallback a LocalStorage si no hubo servidor o falló todo
+      if (!loaded && (allProductos.length === 0 || !allProductos[0] || !allProductos[0].nombre)) {
         const pSaved = localStorage.getItem('hr_productos_local_v2');
         allProductos = pSaved ? JSON.parse(pSaved) : [...DEMO_PRODUCTOS];
       }
