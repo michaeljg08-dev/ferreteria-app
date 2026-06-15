@@ -4321,6 +4321,30 @@
       if (nosotrosData.title === undefined || !nosotrosData.title) loadNosotros();
       if (allSucursales.length === 0 || !allSucursales[0] || !allSucursales[0].tabName) loadSucursales();
 
+      // 4. Auto-recuperación de productos personalizados desde caché local
+      try {
+        const pSaved = localStorage.getItem('hr_productos_local_v2');
+        if (pSaved) {
+          const localProds = JSON.parse(pSaved);
+          let merged = false;
+          localProds.forEach(lp => {
+            if (lp && lp.id && !allProductos.some(sp => sp.id === lp.id)) {
+              allProductos.push(lp);
+              merged = true;
+            }
+          });
+          if (merged) {
+            console.log("Se fusionaron productos personalizados locales con los del servidor");
+            localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
+            if (loaded) {
+              setTimeout(() => { syncConServidor(); }, 2000);
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Error al fusionar productos locales en initApp:", e);
+      }
+
       try { renderHeroSlides(); } catch(e) { console.error('Error en renderHeroSlides:', e); }
       try { renderProductos(); } catch(e) { console.error('Error en renderProductos:', e); }
       try { renderFiltros(allProductos); } catch(e) { console.error('Error en renderFiltros:', e); }
@@ -5160,6 +5184,51 @@
     window.deleteProducto = deleteProducto;
     window.closeProductoEditor = closeProductoEditor;
 
+    window.restaurarCopiaLocal = function() {
+      if (!confirm('¿Deseas restaurar todos los productos, carruseles, servicios, sucursales e información de "Nosotros" que tengas guardados localmente en la caché de este navegador y subirlos al servidor?')) return;
+      try {
+        const prods = localStorage.getItem('hr_productos_local_v2');
+        const slides = localStorage.getItem('hr_slides_v2');
+        const servicios = localStorage.getItem('hr_servicios_v2');
+        const sucursales = localStorage.getItem('hr_sucursales_v2');
+        const nosotros = localStorage.getItem('hr_nosotros_v2');
+        
+        let count = 0;
+        if (prods) { allProductos = JSON.parse(prods); count++; }
+        if (slides) { allSlides = JSON.parse(slides); count++; }
+        if (servicios) { allServicios = JSON.parse(servicios); count++; }
+        if (sucursales) { allSucursales = JSON.parse(sucursales); count++; }
+        if (nosotros) { nosotrosData = JSON.parse(nosotros); count++; }
+        
+        if (count > 0) {
+          localStorage.setItem('hr_productos_local_v2', JSON.stringify(allProductos));
+          localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
+          localStorage.setItem('hr_servicios_v2', JSON.stringify(allServicios));
+          localStorage.setItem('hr_sucursales_v2', JSON.stringify(allSucursales));
+          localStorage.setItem('hr_nosotros_v2', JSON.stringify(nosotrosData));
+
+          renderHeroSlides();
+          renderProductos();
+          renderFiltros(allProductos);
+          renderServicios();
+          renderNosotros();
+          renderSucursales();
+          
+          renderDashProductos();
+          if (window.renderDashSlides) window.renderDashSlides();
+          if (window.renderDashServicios) window.renderDashServicios();
+          if (window.renderDashSucursales) window.renderDashSucursales();
+          
+          syncConServidor();
+          alert('¡Datos locales recuperados y sincronizados con el servidor con éxito!');
+        } else {
+          alert('No se encontraron datos guardados en la caché de este navegador.');
+        }
+      } catch (e) {
+        alert('Error al restaurar los datos: ' + e.message);
+      }
+    };
+
     // --- MOTOR DE DATOS Y UTILIDADES ---
 
 
@@ -5871,9 +5940,12 @@
           </div>
         </div>
         
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; gap:1rem;">
           <h4 style="margin:0">Lista de Artículos</h4>
-          <button class="btn-dash primary" onclick="openProductoEditor()">+ Nuevo Producto</button>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn-dash" style="background:#da291c; color:#fff;" onclick="restaurarCopiaLocal()">🔄 Recuperar Datos Locales</button>
+            <button class="btn-dash primary" onclick="openProductoEditor()">+ Nuevo Producto</button>
+          </div>
         </div>
 
         <div class="dash-table-wrap">
