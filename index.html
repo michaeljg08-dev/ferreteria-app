@@ -1914,11 +1914,17 @@
     /* """"""""""""""""""""""""""""""
    WhatsApp flotante
 """""""""""""""""""""""""""""" */
-    .wa-btn {
+    .wa-container {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      z-index: 200;
+      z-index: 2100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .wa-btn {
       width: 64px;
       height: 64px;
       border-radius: 50%;
@@ -1939,6 +1945,72 @@
     .wa-btn:hover {
       transform: scale(1.08);
       filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+    }
+
+    .wa-menu {
+      display: none;
+      background: var(--gris-oscuro);
+      border: 1px solid var(--gris-borde);
+      border-radius: 12px;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      width: 220px;
+      font-family: 'Barlow Condensed', sans-serif;
+      animation: waMenuFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .wa-menu.show {
+      display: block;
+    }
+
+    .wa-menu-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--amarillo);
+      font-size: 1rem;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      border-bottom: 1px solid var(--gris-borde);
+      padding-bottom: 0.4rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    .wa-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      margin-bottom: 0.3rem;
+      border: 1px solid transparent;
+    }
+
+    .wa-menu-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .wa-menu-item:hover {
+      background: var(--gris-medio);
+      color: var(--amarillo);
+      border-color: var(--amarillo);
+    }
+
+    @keyframes waMenuFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     /* """"""""""""""""""""""""""""""
@@ -3637,27 +3709,35 @@
     </div>
   </footer>
 
-  <!-- WhatsApp flotante (Santa Clara por defecto) -->
-  <a class="wa-btn" id="waBtn" href="https://wa.me/50685841660" target="_blank" title="WhatsApp Santa Clara">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" fill-rule="evenodd"
-      clip-rule="evenodd">
-      <path fill="#fff"
-        d="M4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98c-0.001,0,0,0,0,0h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303z">
-      </path>
-      <path fill="#fff"
-        d="M4.868,43.803c-0.132,0-0.26-0.052-0.355-0.148c-0.125-0.127-0.174-0.312-0.127-0.483l2.639-9.636c-1.636-2.906-2.499-6.206-2.497-9.556C4.532,13.238,13.273,4.5,24.014,4.5c5.21,0.002,10.105,2.031,13.784,5.713c3.679,3.683,5.704,8.577,5.702,13.781c-0.004,10.741-8.746,19.48-19.486,19.48c-3.189-0.001-6.344-0.788-9.144-2.277l-9.875,2.589C4.953,43.798,4.911,43.803,4.868,43.803z">
-      </path>
-      <path fill="#cfd8dc"
-        d="M24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,4C24.014,4,24.014,4,24.014,4C12.998,4,4.032,12.962,4.027,23.979c-0.001,3.367,0.849,6.685,2.461,9.622l-2.585,9.439c-0.094,0.345,0.002,0.713,0.254,0.967c0.19,0.192,0.447,0.297,0.711,0.297c0.085,0,0.17-0.011,0.254-0.033l9.687-2.54c2.828,1.468,5.998,2.243,9.197,2.244c11.024,0,19.99-8.963,19.995-19.98c0.002-5.339-2.075-10.359-5.848-14.135C34.378,6.083,29.357,4.002,24.014,4L24.014,4z">
-      </path>
-      <path fill="#40c351"
-        d="M35.176,12.832c-2.98-2.982-6.941-4.625-11.157-4.626c-8.704,0-15.783,7.076-15.787,15.774c-0.001,2.981,0.833,5.883,2.413,8.396l0.376,0.597l-1.595,5.821l5.973-1.566l0.577,0.342c2.422,1.438,5.2,2.198,8.032,2.199h0.006c8.698,0,15.777-7.077,15.78-15.776C39.795,19.778,38.156,15.814,35.176,12.832z">
-      </path>
-      <path fill="#fff" fill-rule="evenodd"
-        d="M19.268,16.045c-0.355-0.79-0.729-0.806-1.068-0.82c-0.277-0.012-0.593-0.011-0.909-0.011c-0.316,0-0.83,0.119-1.265,0.594c-0.435,0.475-1.661,1.622-1.661,3.956c0,2.334,1.7,4.59,1.937,4.906c0.237,0.316,3.282,5.259,8.104,7.161c4.007,1.58,4.823,1.266,5.693,1.187c0.87-0.079,2.807-1.147,3.202-2.255c0.395-1.108,0.395-2.057,0.277-2.255c-0.119-0.198-0.435-0.316-0.909-0.554s-2.807-1.385-3.242-1.543c-0.435-0.158-0.751-0.237-1.068,0.238c-0.316,0.474-1.225,1.543-1.502,1.859c-0.277,0.317-0.554,0.357-1.028,0.119c-0.474-0.238-2.002-0.738-3.815-2.354c-1.41-1.257-2.362-2.81-2.639-3.285c-0.277-0.474-0.03-0.731,0.208-0.968c0.213-0.213,0.474-0.554,0.712-0.831c0.237-0.277,0.316-0.475,0.474-0.791c0.158-0.317,0.079-0.594-0.04-0.831C20.612,19.329,19.69,16.983,19.268,16.045z"
-        clip-rule="evenodd"></path>
-    </svg>
-  </a>
+  <!-- WhatsApp flotante con selector de sucursales -->
+  <div class="wa-container" id="waContainer">
+    <div class="wa-menu" id="waMenu">
+      <div class="wa-menu-title">Escríbenos por WhatsApp</div>
+      <div id="waMenuOptions">
+         <!-- Se carga dinámicamente -->
+      </div>
+    </div>
+    <button class="wa-btn" id="waBtn" onclick="toggleWaMenu(event)" title="Contactar por WhatsApp" style="border: none; outline: none; cursor: pointer;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" fill-rule="evenodd"
+        clip-rule="evenodd">
+        <path fill="#fff"
+          d="M4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98c-0.001,0,0,0,0,0h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303z">
+        </path>
+        <path fill="#fff"
+          d="M4.868,43.803c-0.132,0-0.26-0.052-0.355-0.148c-0.125-0.127-0.174-0.312-0.127-0.483l2.639-9.636c-1.636-2.906-2.499-6.206-2.497-9.556C4.532,13.238,13.273,4.5,24.014,4.5c5.21,0.002,10.105,2.031,13.784,5.713c3.679,3.683,5.704,8.577,5.702,13.781c-0.004,10.741-8.746,19.48-19.486,19.48c-3.189-0.001-6.344-0.788-9.144-2.277l-9.875,2.589C4.953,43.798,4.911,43.803,4.868,43.803z">
+        </path>
+        <path fill="#cfd8dc"
+          d="M24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,4C24.014,4,24.014,4,24.014,4C12.998,4,4.032,12.962,4.027,23.979c-0.001,3.367,0.849,6.685,2.461,9.622l-2.585,9.439c-0.094,0.345,0.002,0.713,0.254,0.967c0.19,0.192,0.447,0.297,0.711,0.297c0.085,0,0.17-0.011,0.254-0.033l9.687-2.54c2.828,1.468,5.998,2.243,9.197,2.244c11.024,0,19.99-8.963,19.995-19.98c0.002-5.339-2.075-10.359-5.848-14.135C34.378,6.083,29.357,4.002,24.014,4L24.014,4z">
+        </path>
+        <path fill="#40c351"
+          d="M35.176,12.832c-2.98-2.982-6.941-4.625-11.157-4.626c-8.704,0-15.783,7.076-15.787,15.774c-0.001,2.981,0.833,5.883,2.413,8.396l0.376,0.597l-1.595,5.821l5.973-1.566l0.577,0.342c2.422,1.438,5.2,2.198,8.032,2.199h0.006c8.698,0,15.777-7.077,15.78-15.776C39.795,19.778,38.156,15.814,35.176,12.832z">
+        </path>
+        <path fill="#fff" fill-rule="evenodd"
+          d="M19.268,16.045c-0.355-0.79-0.729-0.806-1.068-0.82c-0.277-0.012-0.593-0.011-0.909-0.011c-0.316,0-0.83,0.119-1.265,0.594c-0.435,0.475-1.661,1.622-1.661,3.956c0,2.334,1.7,4.59,1.937,4.906c0.237,0.316,3.282,5.259,8.104,7.161c4.007,1.58,4.823,1.266,5.693,1.187c0.87-0.079,2.807-1.147,3.202-2.255c0.395-1.108,0.395-2.057,0.277-2.255c-0.119-0.198-0.435-0.316-0.909-0.554s-2.807-1.385-3.242-1.543c-0.435-0.158-0.751-0.237-1.068,0.238c-0.316,0.474-1.225,1.543-1.502,1.859c-0.277,0.317-0.554,0.357-1.028,0.119c-0.474-0.238-2.002-0.738-3.815-2.354c-1.41-1.257-2.362-2.81-2.639-3.285c-0.277-0.474-0.03-0.731,0.208-0.968c0.213-0.213,0.474-0.554,0.712-0.831c0.237-0.277,0.316-0.475,0.474-0.791c0.158-0.317,0.079-0.594-0.04-0.831C20.612,19.329,19.69,16.983,19.268,16.045z"
+          clip-rule="evenodd"></path>
+      </svg>
+    </button>
+  </div>
 
   <!-- """"""""""""""""""""""""""""""""
      JAVASCRIPT
@@ -3673,10 +3753,50 @@
       sucursalActual = n;
       document.querySelectorAll('.suc-tab').forEach((t, i) => t.classList.toggle('on', i === n - 1));
       document.querySelectorAll('.suc-panel').forEach((p, i) => p.classList.toggle('on', i === n - 1));
-      // Actualizar WhatsApp flotante
-      document.getElementById('waBtn').href = `https://wa.me/${WA_NUMBERS[n]}`;
-      document.getElementById('waBtn').title = n === 1 ? 'WhatsApp Santa Clara' : 'WhatsApp Valle Azul';
+      
+      // Con el selector dinámico de WhatsApp flotante, no actualizamos el href de waBtn directamente
+      const waBtn = document.getElementById('waBtn');
+      if (waBtn && waBtn.tagName === 'A') {
+        waBtn.href = `https://wa.me/${WA_NUMBERS[n]}`;
+        waBtn.title = n === 1 ? 'WhatsApp Santa Clara' : 'WhatsApp Valle Azul';
+      }
     }
+
+    // Selector dinámico de WhatsApp flotante
+    window.toggleWaMenu = function(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('waMenu');
+      if (!menu) return;
+      
+      const isOpen = menu.classList.contains('show');
+      if (!isOpen) {
+         const optionsDiv = document.getElementById('waMenuOptions');
+         if (optionsDiv) {
+            const list = (window.allSucursales && window.allSucursales.length > 0) ? window.allSucursales : [
+              { tabName: 'Santa Clara', whatsappVal: '50685841660' },
+              { tabName: 'Valle Azul', whatsappVal: '50689852476' }
+            ];
+            optionsDiv.innerHTML = list.map(suc => `
+              <a class="wa-menu-item" href="https://wa.me/${suc.whatsappVal || '50685841660'}" target="_blank" onclick="document.getElementById('waMenu').classList.remove('show');">
+                <span style="font-size: 1.15rem;">💬</span> Sucursal ${suc.tabName}
+              </a>
+            `).join('');
+         }
+         menu.classList.add('show');
+      } else {
+         menu.classList.remove('show');
+      }
+    };
+
+    document.addEventListener('click', function(e) {
+       const menu = document.getElementById('waMenu');
+       const btn = document.getElementById('waBtn');
+       if (menu && menu.classList.contains('show')) {
+          if (!menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+             menu.classList.remove('show');
+          }
+       }
+    });
 
     /* ════════ FORM ════════ */
     function submitForm(btn) {
@@ -4065,14 +4185,20 @@
       
       const validServicios = allServicios.filter(s => s && s.name);
       
-      grid.innerHTML = validServicios.map((s, idx) => `
-        <div class="srv-card">
-          <div class="srv-num">0${idx + 1}</div>
-          <span class="srv-icon">${s.icon || '🛠️'}</span>
-          <div class="srv-name">${s.name || ''}</div>
-          <p class="srv-desc">${s.desc || ''}</p>
-        </div>
-      `).join('');
+      grid.innerHTML = validServicios.map((s, idx) => {
+        let iconHtml = s.icon || '🛠️';
+        if (iconHtml.includes('/') || iconHtml.startsWith('data:') || iconHtml.includes('.')) {
+          iconHtml = `<img src="${iconHtml}" alt="${s.name || ''}">`;
+        }
+        return `
+          <div class="srv-card">
+            <div class="srv-num">0${idx + 1}</div>
+            <span class="srv-icon">${iconHtml}</span>
+            <div class="srv-name">${s.name || ''}</div>
+            <p class="srv-desc">${s.desc || ''}</p>
+          </div>
+        `;
+      }).join('');
     }
 
     function loadNosotros() {
@@ -4185,15 +4311,21 @@
       window.renderDashServicios = function() {
         const list = document.getElementById('serviciosEditList');
         if (!list) return;
-        list.innerHTML = allServicios.map(s => `
-          <div onclick="editServicio(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
-              <span style="font-size:1.5rem;">${s.icon}</span>
-              <div>
-                  <div style="font-weight:bold; color:var(--amarillo);">${s.name}</div>
-                  <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
-              </div>
-          </div>
-        `).join('');
+        list.innerHTML = allServicios.map(s => {
+          let iconHtml = s.icon || '🛠️';
+          if (iconHtml.includes('/') || iconHtml.startsWith('data:') || iconHtml.includes('.')) {
+            iconHtml = `<img src="${iconHtml}" style="width:24px; height:24px; object-fit:contain;" alt="">`;
+          }
+          return `
+            <div onclick="editServicio(${s.id})" style="padding:0.8rem; border-bottom:1px solid var(--borde); cursor:pointer; display:flex; gap:1rem; align-items:center;" class="hover-item">
+                <span style="font-size:1.5rem; display:flex; align-items:center; justify-content:center;">${iconHtml}</span>
+                <div>
+                    <div style="font-weight:bold; color:var(--amarillo);">${s.name}</div>
+                    <div style="font-size:0.8rem; color:var(--gris-texto);">${s.desc.substring(0, 50)}...</div>
+                </div>
+            </div>
+          `;
+        }).join('');
       };
       window.editServicio = function(id) {
         const s = allServicios.find(x => x.id == id);
@@ -4202,10 +4334,21 @@
         document.getElementById('serIcon').value = s.icon;
         document.getElementById('serName').value = s.name;
         document.getElementById('serDesc').value = s.desc;
+        
+        const preview = document.getElementById('serIconPreview');
+        if (preview) {
+          if (s.icon && (s.icon.includes('/') || s.icon.startsWith('data:') || s.icon.includes('.'))) {
+            preview.innerHTML = `<img src="${s.icon}" style="width:39px; height:39px; border-radius:4px; margin-top:0.5rem; object-fit:contain;" alt="Preview">`;
+          } else {
+            preview.innerHTML = '';
+          }
+        }
         document.getElementById('servicioEditor').classList.add('show');
       };
       window.closeServicioEditor = function() {
         document.getElementById('servicioEditor').classList.remove('show');
+        const preview = document.getElementById('serIconPreview');
+        if (preview) preview.innerHTML = '';
       };
       window.saveServicio = function() {
         const id = document.getElementById('editServicioId').value;
@@ -4391,7 +4534,7 @@
             if (res.status === 'ok') {
                 document.getElementById(targetId).value = res.url;
                 btn.textContent = '✅ ¡Subida!';
-                setTimeout(() => { btn.textContent = 'Subir Foto 📷'; btn.disabled = false; }, 2000);
+                setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
                 
                 // [Auto-save and Preview Fix]
                 if (targetId === 'sImage') {
@@ -4400,6 +4543,11 @@
                         preview.innerHTML = `<img src="${res.url}" style="max-width:100%; max-height:150px; border-radius:6px; margin-top:0.5rem; object-fit:cover;" alt="Preview">`;
                     }
                     window.saveSlide(); // Auto-guardar para actualizar el hero
+                } else if (targetId === 'serIcon') {
+                    const preview = document.getElementById('serIconPreview');
+                    if (preview) {
+                        preview.innerHTML = `<img src="${res.url}" style="width:39px; height:39px; border-radius:4px; margin-top:0.5rem; object-fit:contain;" alt="Preview">`;
+                    }
                 }
             } else {
                 alert("Error: " + res.message);
@@ -4855,6 +5003,7 @@
         localStorage.setItem('hr_slides_v2', JSON.stringify(allSlides));
         renderHeroSlides();
         renderDashSlides();
+        syncConServidor();
     };
     window.saveSlide = function() {
         const id = parseInt(document.getElementById('editSlideId').value);
@@ -4870,6 +5019,7 @@
         renderHeroSlides();
         renderDashSlides();
         window.closeSlideEditor();
+        syncConServidor();
     };
 
     // --- PRODUCT MANAGEMENT ---
@@ -5753,7 +5903,7 @@
   <div id="slideEditor" class="login-modal" style="z-index:3000;">
     <div class="login-box" style="max-width:500px;">
       <h3 id="slideEditTitle">Editar Slide</h3>
-      <input type="hidden" id="editSlideIdx" value="-1">
+      <input type="hidden" id="editSlideId" value="-1">
       <div class="dash-input-group">
         <label>Campo 1 (Texto Blanco)</label>
         <input type="text" id="sT1" placeholder="Ej: Soluciones en Acero">
@@ -5803,8 +5953,13 @@
       <h3 id="servicioEditTitle">Editar Servicio</h3>
       <input type="hidden" id="editServicioId" value="">
       <div class="dash-input-group">
-        <label>Icono (Emoji)</label>
-        <input type="text" id="serIcon" placeholder="Ej: 🛠️">
+        <label>Icono (Emoji o URL de Imagen PNG/JPG)</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" id="serIcon" placeholder="Ej: 🛠️ o uploads/icono.png" style="flex:1">
+          <button class="btn-dash sm" onclick="this.nextElementSibling.click()">Subir Icono 📷</button>
+          <input type="file" style="display:none" onchange="subirImagen(this, 'serIcon')">
+        </div>
+        <div id="serIconPreview" style="margin-top:0.5rem;"></div>
       </div>
       <div class="dash-input-group">
         <label>Título del Servicio</label>
