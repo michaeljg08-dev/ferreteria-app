@@ -3792,13 +3792,6 @@
        }
     });
 
-    /* ════════ FORM ════════ */
-    function submitForm(btn) {
-      const orig = btn.textContent;
-      btn.textContent = '✅ Mensaje enviado';
-      btn.style.background = '#00cc66';
-      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
-    }
 
 
     /* ════════ CONFIG DASHBOARD TABS ════════ */
@@ -4537,8 +4530,44 @@
         if (pan) pan.classList.add('on');
       };
       window.submitForm = (btn) => {
-        alert('Mensaje enviado. ¡Nos contactaremos pronto!');
-        btn.closest('.suc-panel').querySelectorAll('input, select, textarea').forEach(i => i.value = '');
+        const panel = btn.closest('.suc-panel');
+        if (!panel) return;
+
+        const nombre = panel.querySelector('input[placeholder="Tu nombre completo"]').value.trim();
+        const telefono = panel.querySelector('input[placeholder="+506 0000-0000"]').value.trim();
+        const correo = panel.querySelector('input[placeholder="correo@ejemplo.com"]').value.trim();
+        const mensaje = panel.querySelector('textarea').value.trim();
+
+        if (!nombre || !telefono || !mensaje) {
+          alert("Por favor, completa los campos requeridos (Nombre, Teléfono y Mensaje) para enviar la consulta.");
+          return;
+        }
+
+        // Detectar sucursal
+        const branchId = parseInt(panel.id.replace('suc', ''));
+        const branch = allSucursales.find(x => x.id === branchId);
+        const phone = branch ? branch.whatsappVal : '50685841660';
+        const branchName = branch ? branch.tabName : 'Sucursal';
+
+        let msg = `*CONSULTA - FERRETERÍA HR* 🛠️\n\n`;
+        msg += `*Cliente:* ${nombre}\n`;
+        msg += `*Teléfono:* ${telefono}\n`;
+        if (correo) {
+          msg += `*Correo:* ${correo}\n`;
+        }
+        msg += `*Sucursal:* ${branchName}\n`;
+        msg += `-------------------------------------------\n\n`;
+        msg += `*Mensaje:*\n${mensaje}\n\n`;
+        msg += `_Enviado desde el sitio web de Ferretería HR._`;
+
+        const encodedMsg = encodeURIComponent(msg);
+        const waUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedMsg}`;
+        
+        // Abrir WhatsApp
+        window.open(waUrl, '_blank');
+
+        // Limpiar campos
+        panel.querySelectorAll('input, select, textarea').forEach(i => i.value = '');
       };
     }
 
