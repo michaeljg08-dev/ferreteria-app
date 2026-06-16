@@ -3,12 +3,15 @@ on:
   push:
     branches:
       - main
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Obtener el código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🚀 Subir archivos vía FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
